@@ -40,7 +40,6 @@ SOURCES += main.cpp\
     descriptor.cpp \
     mapping.cpp \
     binary_tree_tostorage.cpp \
-    eventmouseclassscene.cpp \
     originimagemanipulation.cpp
 
 HEADERS  += mainwindow.h \
@@ -50,7 +49,6 @@ HEADERS  += mainwindow.h \
     descriptor.h \
     mapping.h \
     binary_tree_tostorage.h \
-    eventmouseclassscene.h \
     originimagemanipulation.h
 
 FORMS    += mainwindow.ui

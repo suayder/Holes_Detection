@@ -56,10 +56,8 @@ SOURCES       = ../Weightless_Neural_Network/main.cpp \
 		../Weightless_Neural_Network/descriptor.cpp \
 		../Weightless_Neural_Network/mapping.cpp \
 		../Weightless_Neural_Network/binary_tree_tostorage.cpp \
-		../Weightless_Neural_Network/eventmouseclassscene.cpp \
 		../Weightless_Neural_Network/originimagemanipulation.cpp moc_mainwindow.cpp \
-		moc_eventmouseclass.cpp \
-		moc_eventmouseclassscene.cpp
+		moc_eventmouseclass.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		ram.o \
@@ -68,11 +66,9 @@ OBJECTS       = main.o \
 		descriptor.o \
 		mapping.o \
 		binary_tree_tostorage.o \
-		eventmouseclassscene.o \
 		originimagemanipulation.o \
 		moc_mainwindow.o \
-		moc_eventmouseclass.o \
-		moc_eventmouseclassscene.o
+		moc_eventmouseclass.o
 DIST          = /home/suayder/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/mkspecs/common/unix.conf \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/mkspecs/common/linux.conf \
@@ -229,7 +225,6 @@ DIST          = /home/suayder/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../Weightless_Neural_Network/descriptor.h \
 		../Weightless_Neural_Network/mapping.h \
 		../Weightless_Neural_Network/binary_tree_tostorage.h \
-		../Weightless_Neural_Network/eventmouseclassscene.h \
 		../Weightless_Neural_Network/originimagemanipulation.h ../Weightless_Neural_Network/main.cpp \
 		../Weightless_Neural_Network/mainwindow.cpp \
 		../Weightless_Neural_Network/ram.cpp \
@@ -238,7 +233,6 @@ DIST          = /home/suayder/Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../Weightless_Neural_Network/descriptor.cpp \
 		../Weightless_Neural_Network/mapping.cpp \
 		../Weightless_Neural_Network/binary_tree_tostorage.cpp \
-		../Weightless_Neural_Network/eventmouseclassscene.cpp \
 		../Weightless_Neural_Network/originimagemanipulation.cpp
 QMAKE_TARGET  = Weightless_Neural_Network
 DESTDIR       = 
@@ -572,8 +566,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Weightless_Neural_Network/mainwindow.h ../Weightless_Neural_Network/ram.h ../Weightless_Neural_Network/conversion.h ../Weightless_Neural_Network/eventmouseclass.h ../Weightless_Neural_Network/descriptor.h ../Weightless_Neural_Network/mapping.h ../Weightless_Neural_Network/binary_tree_tostorage.h ../Weightless_Neural_Network/eventmouseclassscene.h ../Weightless_Neural_Network/originimagemanipulation.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Weightless_Neural_Network/main.cpp ../Weightless_Neural_Network/mainwindow.cpp ../Weightless_Neural_Network/ram.cpp ../Weightless_Neural_Network/conversion.cpp ../Weightless_Neural_Network/eventmouseclass.cpp ../Weightless_Neural_Network/descriptor.cpp ../Weightless_Neural_Network/mapping.cpp ../Weightless_Neural_Network/binary_tree_tostorage.cpp ../Weightless_Neural_Network/eventmouseclassscene.cpp ../Weightless_Neural_Network/originimagemanipulation.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Weightless_Neural_Network/mainwindow.h ../Weightless_Neural_Network/ram.h ../Weightless_Neural_Network/conversion.h ../Weightless_Neural_Network/eventmouseclass.h ../Weightless_Neural_Network/descriptor.h ../Weightless_Neural_Network/mapping.h ../Weightless_Neural_Network/binary_tree_tostorage.h ../Weightless_Neural_Network/originimagemanipulation.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Weightless_Neural_Network/main.cpp ../Weightless_Neural_Network/mainwindow.cpp ../Weightless_Neural_Network/ram.cpp ../Weightless_Neural_Network/conversion.cpp ../Weightless_Neural_Network/eventmouseclass.cpp ../Weightless_Neural_Network/descriptor.cpp ../Weightless_Neural_Network/mapping.cpp ../Weightless_Neural_Network/binary_tree_tostorage.cpp ../Weightless_Neural_Network/originimagemanipulation.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Weightless_Neural_Network/mainwindow.ui $(DISTDIR)/
 
 
@@ -600,9 +594,9 @@ benchmark: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_eventmouseclass.cpp moc_eventmouseclassscene.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_eventmouseclass.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_eventmouseclass.cpp moc_eventmouseclassscene.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_eventmouseclass.cpp
 moc_mainwindow.cpp: /home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMainWindow \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qmainwindow.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qwidget.h \
@@ -706,13 +700,13 @@ moc_mainwindow.cpp: /home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMainWind
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QDir \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qdir.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qfileinfo.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QFile \
 		../Weightless_Neural_Network/conversion.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QDebug \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QImage \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QPixmap \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItem \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitem.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsLineItem \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsScene \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsscene.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
@@ -720,13 +714,20 @@ moc_mainwindow.cpp: /home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMainWind
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialog.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QPoint \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QActionGroup \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QJsonDocument \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsondocument.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QJsonObject \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsonobject.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QJsonArray \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsonarray.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariantMap \
 		../Weightless_Neural_Network/originimagemanipulation.h \
+		../Weightless_Neural_Network/mapping.h \
 		../Weightless_Neural_Network/eventmouseclass.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QEvent \
@@ -738,6 +739,8 @@ moc_mainwindow.cpp: /home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMainWind
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QPainter \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		../Weightless_Neural_Network/mainwindow.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/bin/moc
 	/home/suayder/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/suayder/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/suayder/Documents/Computer_Science/Detection_of_holes_in_asphalt_with_pattern_detection/Repository_Github/Holes_Detection/Weightless_Neural_Network -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/home/suayder/Qt5.7.0/5.7/gcc_64/include -I/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Weightless_Neural_Network/mainwindow.h -o moc_mainwindow.cpp
@@ -860,127 +863,6 @@ moc_eventmouseclass.cpp: /home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWid
 		../Weightless_Neural_Network/eventmouseclass.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/bin/moc
 	/home/suayder/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/suayder/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/suayder/Documents/Computer_Science/Detection_of_holes_in_asphalt_with_pattern_detection/Repository_Github/Holes_Detection/Weightless_Neural_Network -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/home/suayder/Qt5.7.0/5.7/gcc_64/include -I/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Weightless_Neural_Network/eventmouseclass.h -o moc_eventmouseclass.cpp
-
-moc_eventmouseclassscene.cpp: /home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qwidget.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qwindowdefs.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qglobal.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qconfig.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qfeatures.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qtypetraits.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qisenum.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsysinfo.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qlogging.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qflags.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qatomic.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qatomic_msvc.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qmutex.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qnumeric.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qversiontagging.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qnamespace.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qwindowdefs_win.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobject.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstring.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qchar.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qbytearray.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qrefcount.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qarraydata.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qlist.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qalgorithms.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qiterator.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qhashfunctions.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qpair.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringlist.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qregexp.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreevent.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qmetatype.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobject_impl.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qmargins.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qrect.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsize.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qpoint.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpalette.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qcolor.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qrgb.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qrgba64.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qbrush.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qvector.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qmatrix.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpolygon.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qregion.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qdatastream.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qiodevice.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qline.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qtransform.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpainterpath.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qimage.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpixelformat.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpixmap.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qshareddata.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qhash.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qfont.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qfontinfo.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qcursor.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qkeysequence.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qevent.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qvariant.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qmap.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qdebug.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qtextstream.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qlocale.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qset.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qurl.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qurlquery.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qfile.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qfiledevice.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qvector2d.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qtouchdevice.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsView \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsview.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpainter.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qscrollarea.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsscene.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QPainter \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItem \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitem.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsScene \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QPoint \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QObject \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsLineItem \
-		../Weightless_Neural_Network/eventmouseclassscene.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/suayder/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/suayder/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/suayder/Documents/Computer_Science/Detection_of_holes_in_asphalt_with_pattern_detection/Repository_Github/Holes_Detection/Weightless_Neural_Network -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/home/suayder/Qt5.7.0/5.7/gcc_64/include -I/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Weightless_Neural_Network/eventmouseclassscene.h -o moc_eventmouseclassscene.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1221,13 +1103,13 @@ main.o: ../Weightless_Neural_Network/main.cpp ../Weightless_Neural_Network/mainw
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QDir \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qdir.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qfileinfo.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QFile \
 		../Weightless_Neural_Network/conversion.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QDebug \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QImage \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QPixmap \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItem \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitem.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsLineItem \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsScene \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsscene.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
@@ -1235,13 +1117,20 @@ main.o: ../Weightless_Neural_Network/main.cpp ../Weightless_Neural_Network/mainw
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialog.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QPoint \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QActionGroup \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QJsonDocument \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsondocument.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QJsonObject \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsonobject.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QJsonArray \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsonarray.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariantMap \
 		../Weightless_Neural_Network/originimagemanipulation.h \
+		../Weightless_Neural_Network/mapping.h \
 		../Weightless_Neural_Network/eventmouseclass.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QEvent \
@@ -1253,6 +1142,8 @@ main.o: ../Weightless_Neural_Network/main.cpp ../Weightless_Neural_Network/mainw
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QPainter \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1366,13 +1257,13 @@ mainwindow.o: ../Weightless_Neural_Network/mainwindow.cpp ../Weightless_Neural_N
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QDir \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qdir.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qfileinfo.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QFile \
 		../Weightless_Neural_Network/conversion.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QDebug \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QImage \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QPixmap \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItem \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitem.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsLineItem \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsScene \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsscene.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
@@ -1380,13 +1271,20 @@ mainwindow.o: ../Weightless_Neural_Network/mainwindow.cpp ../Weightless_Neural_N
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialog.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QPoint \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QActionGroup \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QJsonDocument \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsondocument.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QJsonObject \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsonobject.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QJsonArray \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qjsonarray.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariantMap \
 		../Weightless_Neural_Network/originimagemanipulation.h \
+		../Weightless_Neural_Network/mapping.h \
 		../Weightless_Neural_Network/eventmouseclass.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QEvent \
@@ -1398,6 +1296,8 @@ mainwindow.o: ../Weightless_Neural_Network/mainwindow.cpp ../Weightless_Neural_N
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QPainter \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
 		ui_mainwindow.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
@@ -1440,9 +1340,10 @@ mainwindow.o: ../Weightless_Neural_Network/mainwindow.cpp ../Weightless_Neural_N
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidget \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistview.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMenu \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qmenu.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMenuBar \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qmenubar.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qmenu.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
@@ -1676,10 +1577,11 @@ mapping.o: ../Weightless_Neural_Network/mapping.cpp ../Weightless_Neural_Network
 binary_tree_tostorage.o: ../Weightless_Neural_Network/binary_tree_tostorage.cpp ../Weightless_Neural_Network/binary_tree_tostorage.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o binary_tree_tostorage.o ../Weightless_Neural_Network/binary_tree_tostorage.cpp
 
-eventmouseclassscene.o: ../Weightless_Neural_Network/eventmouseclassscene.cpp ../Weightless_Neural_Network/eventmouseclassscene.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qwidget.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qwindowdefs.h \
+originimagemanipulation.o: ../Weightless_Neural_Network/originimagemanipulation.cpp ../Weightless_Neural_Network/originimagemanipulation.h \
+		../Weightless_Neural_Network/mapping.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QDebug \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qdebug.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qalgorithms.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qglobal.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qconfig.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qfeatures.h \
@@ -1702,103 +1604,43 @@ eventmouseclassscene.o: ../Weightless_Neural_Network/eventmouseclassscene.cpp ..
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qmutex.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qnumeric.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qversiontagging.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qnamespace.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qwindowdefs_win.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobject.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstring.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qhash.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qchar.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qbytearray.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qiterator.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qlist.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qrefcount.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qarraydata.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qlist.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qalgorithms.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qiterator.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qhashfunctions.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qpair.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qbytearray.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qnamespace.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstring.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringbuilder.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringlist.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qregexp.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qmap.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qtextstream.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qiodevice.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobject.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreevent.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qscopedpointer.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qmetatype.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qvarlengtharray.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qcontainerfwd.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qobject_impl.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qmargins.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qrect.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsize.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qpoint.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpalette.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qcolor.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qrgb.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qrgba64.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qbrush.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qvector.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qmatrix.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpolygon.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qregion.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qdatastream.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qiodevice.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qline.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qtransform.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpainterpath.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qimage.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpixelformat.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpixmap.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qshareddata.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qhash.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qfont.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qfontinfo.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qcursor.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qkeysequence.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qevent.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qvariant.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qmap.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qdebug.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qtextstream.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qlocale.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qvariant.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qshareddata.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qvector.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qpoint.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qset.h \
 		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qurl.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qurlquery.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qfile.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qfiledevice.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qvector2d.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qtouchdevice.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsView \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsview.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpainter.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qscrollarea.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsscene.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtGui/QPainter \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItem \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitem.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsScene \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QPoint \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QObject \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsLineItem \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QDebug \
-		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/QRect
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o eventmouseclassscene.o ../Weightless_Neural_Network/eventmouseclassscene.cpp
-
-originimagemanipulation.o: ../Weightless_Neural_Network/originimagemanipulation.cpp ../Weightless_Neural_Network/originimagemanipulation.h
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/suayder/Qt5.7.0/5.7/gcc_64/include/QtCore/qsharedpointer_impl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o originimagemanipulation.o ../Weightless_Neural_Network/originimagemanipulation.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
@@ -1806,9 +1648,6 @@ moc_mainwindow.o: moc_mainwindow.cpp
 
 moc_eventmouseclass.o: moc_eventmouseclass.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_eventmouseclass.o moc_eventmouseclass.cpp
-
-moc_eventmouseclassscene.o: moc_eventmouseclassscene.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_eventmouseclassscene.o moc_eventmouseclassscene.cpp
 
 ####### Install
 

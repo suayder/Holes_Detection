@@ -12,6 +12,26 @@ QPoint EventMouseClass::getPoint2() const
     return point2;
 }
 
+void EventMouseClass::setPoint1(const QPoint &value)
+{
+    point1 = value;
+}
+
+void EventMouseClass::setPoint2(const QPoint &value)
+{
+    point2 = value;
+}
+
+int EventMouseClass::widthOfRect()
+{
+    return (this->point2.x() - this->point1.x());
+}
+
+int EventMouseClass::heightOfRect()
+{
+    return (this->point2.y() - this->point1.y());
+}
+
 EventMouseClass::EventMouseClass(QWidget *parent) : QGraphicsView(parent)
 {
     this->pointflag = false;

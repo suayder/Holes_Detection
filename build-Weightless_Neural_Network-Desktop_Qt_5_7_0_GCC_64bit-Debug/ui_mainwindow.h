@@ -20,6 +20,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
@@ -33,6 +34,8 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *Salve_DBF;
+    QAction *actionExit;
     QWidget *centralWidget;
     QLabel *labelStatus;
     QRadioButton *trainig;
@@ -48,7 +51,13 @@ public:
     QLabel *label_2;
     QLabel *numberRans;
     QPushButton *StartTrain;
+    QLabel *points;
+    QLabel *x1;
+    QLabel *y1;
+    QLabel *x2;
+    QLabel *y2;
     QMenuBar *menuBar;
+    QMenu *menuOptions;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -56,8 +65,12 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1045, 612);
+        MainWindow->resize(1089, 624);
         MainWindow->setMouseTracking(false);
+        Salve_DBF = new QAction(MainWindow);
+        Salve_DBF->setObjectName(QStringLiteral("Salve_DBF"));
+        actionExit = new QAction(MainWindow);
+        actionExit->setObjectName(QStringLiteral("actionExit"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         labelStatus = new QLabel(centralWidget);
@@ -79,7 +92,7 @@ public:
         imageList->setGeometry(QRect(10, 330, 211, 161));
         graphicsView = new EventMouseClass(centralWidget);
         graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->setGeometry(QRect(230, 10, 801, 481));
+        graphicsView->setGeometry(QRect(230, 10, 851, 481));
         graphicsView->setMouseTracking(true);
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
@@ -112,11 +125,28 @@ public:
 
         StartTrain = new QPushButton(centralWidget);
         StartTrain->setObjectName(QStringLiteral("StartTrain"));
-        StartTrain->setGeometry(QRect(10, 100, 211, 41));
+        StartTrain->setGeometry(QRect(10, 280, 211, 41));
+        points = new QLabel(centralWidget);
+        points->setObjectName(QStringLiteral("points"));
+        points->setGeometry(QRect(10, 100, 61, 21));
+        x1 = new QLabel(centralWidget);
+        x1->setObjectName(QStringLiteral("x1"));
+        x1->setGeometry(QRect(60, 100, 71, 21));
+        y1 = new QLabel(centralWidget);
+        y1->setObjectName(QStringLiteral("y1"));
+        y1->setGeometry(QRect(130, 100, 81, 21));
+        x2 = new QLabel(centralWidget);
+        x2->setObjectName(QStringLiteral("x2"));
+        x2->setGeometry(QRect(60, 120, 71, 16));
+        y2 = new QLabel(centralWidget);
+        y2->setObjectName(QStringLiteral("y2"));
+        y2->setGeometry(QRect(130, 120, 81, 16));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1045, 19));
+        menuBar->setGeometry(QRect(0, 0, 1089, 19));
+        menuOptions = new QMenu(menuBar);
+        menuOptions->setObjectName(QStringLiteral("menuOptions"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -125,22 +155,36 @@ public:
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
 
+        menuBar->addAction(menuOptions->menuAction());
+        menuOptions->addAction(Salve_DBF);
+        menuOptions->addAction(actionExit);
+
         retranslateUi(MainWindow);
+        QObject::connect(actionExit, SIGNAL(triggered()), MainWindow, SLOT(close()));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Prototype", 0));
+        Salve_DBF->setText(QApplication::translate("MainWindow", "Salve Image Info (JSON)", 0));
+        actionExit->setText(QApplication::translate("MainWindow", "Exit", 0));
         labelStatus->setText(QApplication::translate("MainWindow", "Status:", 0));
         trainig->setText(QApplication::translate("MainWindow", "Trainig", 0));
         operation->setText(QApplication::translate("MainWindow", "Operation", 0));
         label->setText(QApplication::translate("MainWindow", "RAM Number Bits:", 0));
+        lineInputBits->setText(QApplication::translate("MainWindow", "7", 0));
         ButtonInputRamBits->setText(QApplication::translate("MainWindow", "Input", 0));
         label_2->setText(QApplication::translate("MainWindow", "Number of RAMs:", 0));
         numberRans->setText(QString());
         StartTrain->setText(QApplication::translate("MainWindow", "Start Train", 0));
+        points->setText(QApplication::translate("MainWindow", "Points:", 0));
+        x1->setText(QApplication::translate("MainWindow", "x1:", 0));
+        y1->setText(QApplication::translate("MainWindow", "y1:", 0));
+        x2->setText(QApplication::translate("MainWindow", "x2:", 0));
+        y2->setText(QApplication::translate("MainWindow", "y2:", 0));
+        menuOptions->setTitle(QApplication::translate("MainWindow", "Options", 0));
     } // retranslateUi
 
 };

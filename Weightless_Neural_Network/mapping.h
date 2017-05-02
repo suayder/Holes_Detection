@@ -15,15 +15,17 @@ class mapping
 {
 public:
     mapping();
+
     void insetIntoSet(vector<char> patterns);
+
     void print_hash(); //Only for test
-    //void setpatterns(vector<char> bitsPatterns);
+
     bool searchPatterns(vector<char> bitsToFind);
-    //vector<char> getPatterns() const;
+
 
 private:
 
-    //vector<char> patterns;
+    vector<char> patterns;
     set<vector<char>> setPatterns;
 
 };

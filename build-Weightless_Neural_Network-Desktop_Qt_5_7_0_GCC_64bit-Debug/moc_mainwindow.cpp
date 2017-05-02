@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[8];
-    char stringdata0[119];
+    QByteArrayData data[13];
+    char stringdata0[188];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,15 +33,22 @@ QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 22), // "on_imageList_activated"
 QT_MOC_LITERAL(2, 34, 0), // ""
 QT_MOC_LITERAL(3, 35, 5), // "index"
-QT_MOC_LITERAL(4, 41, 22), // "mouse_current_position"
-QT_MOC_LITERAL(5, 64, 13), // "mouse_Release"
-QT_MOC_LITERAL(6, 78, 10), // "mouse_Move"
-QT_MOC_LITERAL(7, 89, 29) // "on_ButtonInputRamBits_clicked"
+QT_MOC_LITERAL(4, 41, 16), // "mouse_is_clicked"
+QT_MOC_LITERAL(5, 58, 10), // "mouse_Move"
+QT_MOC_LITERAL(6, 69, 13), // "mouse_Release"
+QT_MOC_LITERAL(7, 83, 29), // "on_ButtonInputRamBits_clicked"
+QT_MOC_LITERAL(8, 113, 21), // "on_StartTrain_clicked"
+QT_MOC_LITERAL(9, 135, 15), // "keyReleaseEvent"
+QT_MOC_LITERAL(10, 151, 10), // "QKeyEvent*"
+QT_MOC_LITERAL(11, 162, 2), // "ev"
+QT_MOC_LITERAL(12, 165, 22) // "on_Salve_DBF_triggered"
 
     },
     "MainWindow\0on_imageList_activated\0\0"
-    "index\0mouse_current_position\0mouse_Release\0"
-    "mouse_Move\0on_ButtonInputRamBits_clicked"
+    "index\0mouse_is_clicked\0mouse_Move\0"
+    "mouse_Release\0on_ButtonInputRamBits_clicked\0"
+    "on_StartTrain_clicked\0keyReleaseEvent\0"
+    "QKeyEvent*\0ev\0on_Salve_DBF_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -51,7 +58,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -59,17 +66,23 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   39,    2, 0x08 /* Private */,
-       4,    0,   42,    2, 0x08 /* Private */,
-       5,    0,   43,    2, 0x08 /* Private */,
-       6,    0,   44,    2, 0x08 /* Private */,
-       7,    0,   45,    2, 0x08 /* Private */,
+       1,    1,   54,    2, 0x08 /* Private */,
+       4,    0,   57,    2, 0x08 /* Private */,
+       5,    0,   58,    2, 0x08 /* Private */,
+       6,    0,   59,    2, 0x08 /* Private */,
+       7,    0,   60,    2, 0x08 /* Private */,
+       8,    0,   61,    2, 0x08 /* Private */,
+       9,    1,   62,    2, 0x08 /* Private */,
+      12,    0,   65,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QModelIndex,    3,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 10,   11,
     QMetaType::Void,
 
        0        // eod
@@ -82,10 +95,13 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->on_imageList_activated((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
-        case 1: _t->mouse_current_position(); break;
-        case 2: _t->mouse_Release(); break;
-        case 3: _t->mouse_Move(); break;
+        case 1: _t->mouse_is_clicked(); break;
+        case 2: _t->mouse_Move(); break;
+        case 3: _t->mouse_Release(); break;
         case 4: _t->on_ButtonInputRamBits_clicked(); break;
+        case 5: _t->on_StartTrain_clicked(); break;
+        case 6: _t->keyReleaseEvent((*reinterpret_cast< QKeyEvent*(*)>(_a[1]))); break;
+        case 7: _t->on_Salve_DBF_triggered(); break;
         default: ;
         }
     }
@@ -116,13 +132,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 8)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 5;
+        _id -= 8;
     }
     return _id;
 }

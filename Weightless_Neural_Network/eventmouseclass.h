@@ -35,6 +35,14 @@ public:
 
     QPoint getPoint2() const;
 
+    void setPoint1(const QPoint &value);
+
+    void setPoint2(const QPoint &value);
+
+    int widthOfRect();
+
+    int heightOfRect();
+
 signals:
     void Mouse_Pressed();
     void Mouse_Move();
