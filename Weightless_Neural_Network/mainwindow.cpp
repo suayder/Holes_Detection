@@ -170,7 +170,7 @@ void MainWindow::on_StartTrain_clicked()
     }
     else{
         int i = 0;
-        while(i<100000){
+        while(i<50000){
             this->imageinput->getRandomPoint();
             i++;
             qDebug() << i;
@@ -216,11 +216,16 @@ void MainWindow::on_Salve_DBF_triggered()
         file.setFileName("../Weightless_Neural_Network/JsonFiles/"+ui->imageList->item(this->current)->text().remove(".JPG",Qt::CaseSensitive)+".json");
         if(file.exists()) file.remove();
         file.setFileName("../Weightless_Neural_Network/JsonFiles/"+ui->imageList->item(this->current)->text().remove(".JPG",Qt::CaseSensitive)+".json");
-        file.open(QIODevice::ReadWrite);
-        file.write(this->SaveInfo.toJson());
-        file.close();
-        msg.setText("Saved Successfully. To access in "+file.fileName());
-        msg.exec();
+        if(!file.open(QIODevice::ReadWrite)){
+            msg.warning(0,"Warning", "Check your image directory!\nDirectory to save: Weightless_Neural_Network/JsonFiles/");
+        }
+
+        else{
+            file.write(this->SaveInfo.toJson());
+            file.close();
+            msg.setText("Saved Successfully. To access in "+file.fileName());
+            msg.exec();
+        }
 
     }
     else{

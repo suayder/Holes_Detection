@@ -49,7 +49,7 @@ int originImageManipulation::rectangleSize()
 
 void originImageManipulation::getRandomPoint() // This function return one binary value randommizing
 {
-    srand(time(NULL));
+    srand(clock());
     int x =rand()%(this->buttonRight.x - this->topLeft.x);
     int y =rand()%(this->buttonRight.y - this->topLeft.y);
     if((this->auxRandom)==NULL) this->allocateAuxMatrix((this->buttonRight.x - this->topLeft.x), (this->buttonRight.y - this->topLeft.y));
