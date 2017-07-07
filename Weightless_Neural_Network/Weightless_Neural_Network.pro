@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     descriptor.cpp \
     mapping.cpp \
     binary_tree_tostorage.cpp \
-    originimagemanipulation.cpp
+    originimagemanipulation.cpp \
+    inputrectanglesize.cpp
 
 HEADERS  += mainwindow.h \
     ram.h \
@@ -49,6 +50,8 @@ HEADERS  += mainwindow.h \
     descriptor.h \
     mapping.h \
     binary_tree_tostorage.h \
-    originimagemanipulation.h
+    originimagemanipulation.h \
+    inputrectanglesize.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    inputrectanglesize.ui

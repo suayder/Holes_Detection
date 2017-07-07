@@ -14,11 +14,13 @@
 
 
 #define ABSOLUTEVALUE(a)a<0?a*(-1):a
+#define SWAP(a,b) {a = a+b; b = a-b; a = a-b;}
 
 
 #include <opencv2/opencv.hpp>
 #include <string>
-#include <mapping.h>
+#include <iostream>
+#include "mapping.h"
 #include <cstdlib>
 #include <ctime>
 
@@ -29,6 +31,7 @@ class originImageManipulation
 {
 public:
     originImageManipulation();
+    ~originImageManipulation();
 
     void imageRead(String directory);
     void thresholding();
@@ -39,19 +42,36 @@ public:
 
     int rectangleSize();
 
-    void getRandomPoint();
+    char getRandomPoint();
+    void shufflePoints(int numberOfRans, int sizeOfvector);
 
-    int imageSize();
+    Size getImageSize();
 
+    Point getTopLeft() const;
+    void setTopLeft(const Point &value);
+
+    Point getButtonRight() const;
+    void setButtonRight(const Point &value);
+
+    void deleteAuxMatrix();
+    void allocateAuxMatrix(int, int);
+    void allocateAuxMatrix(Point, Size);
+
+    void insertRect();
+    
+    vector<pair<Point, Point> > getVr() const;
+
+    void setPointsWithinVector(int pos);
+
+    char *getAuxRandom() const;
 
 private:
 
     Mat image;
     Point topLeft, buttonRight;
-    bool **auxRandom;
+    vector<pair<Point,Point>> vr; //Vector of Rects
+    char *auxRandom; //Is the Matrix to check the values
 
-    void deleteAuxRandom(int i);
-    void allocateAuxMatrix(int i, int j);
 };
 
 #endif // ORIGINIMAGEMANIPULATION_H

@@ -1,10 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+//**********Qt Creator Libraryes ***********
+
 #include <QMainWindow>
 #include <QDir>
 #include <QFile>
-#include <conversion.h>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QObject>
@@ -12,7 +13,12 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QActionGroup>
+#include <QSize>
+#include <QMessageBox>
 
+//**********C++ Libraryes*****************
+
+#include <cstdlib>
 
 //**** Libraryes to Json manipulation********
 
@@ -21,10 +27,13 @@
 #include <QJsonArray>
 #include <QVariantMap>
 
-//***********************************
+//*************** Classes ********************
 
 #include "originimagemanipulation.h"
 #include "eventmouseclass.h"
+#include "descriptor.h"
+#include "conversion.h"
+
 
 
 namespace Ui {
@@ -39,7 +48,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
     void setListDirectoryImages();
+
+    void resetAllValues();
 
 
 
@@ -50,30 +62,45 @@ private slots:
     void mouse_Move();
     void mouse_Release();
 
-    void on_ButtonInputRamBits_clicked();
+    void on_start_clicked();
 
-
-    void on_StartTrain_clicked();
     void keyReleaseEvent(QKeyEvent *ev);
 
     void on_Salve_DBF_triggered();
 
+    void on_actionNew_triggered();
+
+    void on_trainig_clicked();
+    
+    void on_operation_clicked();
+
+    void on_actionSet_a_Size_triggered();
+
+    void on_actionNew_Descriptor_triggered();
+
+    void on_lineInputBits_textEdited(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
+
     QDir directoyimages;
     QPixmap *imagePixmap;
     originImageManipulation *imageinput;
-    Conversion convertimages;
+    Conversion convertimages; //Class Conversion
     QGraphicsScene *scene;
     QGraphicsRectItem *rectToDraw;
     QVector<QGraphicsRectItem*> rects;
+    QSize sizeOfRect;
 
-    QJsonDocument SaveInfo;   
+    Descriptor *network;
+
+    QJsonDocument SaveInfo;
     QFile file;
-    int current;
+    int current; //current row of the image list
 
-    QPoint originPoint;
-    QPoint endPoint;
+    // Points of the current rect
+    QPoint originPoint; //Top Left
+    QPoint endPoint; //Botton Right
 
     int auxWidth1, auxHeight1, auxWidth2, auxHeight2; // this is to be auxiliary in the rectangle move
     bool auxTomove, auxToSelect;

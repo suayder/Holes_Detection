@@ -14,13 +14,14 @@ private:
     unsigned int inputAmount;//number of inputs by RAM
     vector<char> inputstandart; //input standart to each RAM, this will be allocated according number of input in each RAM
 
-    bool output;
-
 public:
-    RAM(unsigned int inputBitsNumber); //OBS:Tenho que alocar mais uma ram se por acaso der numero quebrado
-    void setInputstandart(vector<char> &value);
-    vector<char> getInputstandart();
+    RAM(unsigned int inputBitsNumber);
+    ~RAM();
+    void setInputstandart(char value);
 
+    void deleteVector();
+
+    vector<char> getInputstandart() const;
 };
 
 #endif // RAM_H

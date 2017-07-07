@@ -19,7 +19,7 @@ class EventMouseClass : public QGraphicsView
 private:
     QPoint point1, point2;
     bool pointflag;
-    QGraphicsRectItem *itemRect;
+    //QGraphicsRectItem *itemRect;
     //QPainter painterRect;
 
 public:

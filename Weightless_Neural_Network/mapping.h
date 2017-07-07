@@ -16,17 +16,21 @@ class mapping
 public:
     mapping();
 
-    void insetIntoSet(vector<char> patterns);
+    void insetIntoSet(const vector<char> patterns);
 
     void print_hash(); //Only for test
 
-    bool searchPatterns(vector<char> bitsToFind);
+    bool searchPatterns(const vector<char> bitsToFind);
 
+    int getSetSize() const;
+
+    bool test();
 
 private:
 
     vector<char> patterns;
     set<vector<char>> setPatterns;
+    int setSize;
 
 };
 
