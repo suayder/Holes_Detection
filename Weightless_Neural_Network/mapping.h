@@ -8,6 +8,8 @@
 #include <vector>
 #include <iostream>
 #include <set>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -25,6 +27,10 @@ public:
     int getSetSize() const;
 
     bool test();
+
+    void writeHash(string filePath, int sizeVector, int numiter);
+
+    void readHash(string filePath, int& numiter);
 
 private:
 

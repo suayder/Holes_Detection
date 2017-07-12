@@ -3,6 +3,7 @@
 #include <highgui.h>
 #include "inputrectanglesize.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -146,10 +147,11 @@ void MainWindow::mouse_Release()
           this->imageinput->setButtonRight(Point(this->endPoint.x(), this->endPoint.y()));
       }
       this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(),
-                                              ui->graphicsView->getPoint2().x(), ui->graphicsView->getPoint2().y(),
+                                              this->endPoint.x(), this->endPoint.y(),
                                               this->imagePixmap->width(), this->imagePixmap->height());
 
-       qDebug() << "X: Origin Point"<< QString::number(this->originPoint.x()); // Size in the originaly image
+       //qDebug() << "X: Origin Point"<< QString::number(this->originPoint.x()); // Size in the originaly image
+
 
        if(!this->rects.contains(this->rectToDraw)){
            this->rects.append(this->rectToDraw);
@@ -175,32 +177,46 @@ void MainWindow::on_start_clicked()
     QMessageBox msg;
     ui->stop->setEnabled(true);
 
-    if(!this->rectToDraw){
-        msg.critical(0,"ERROR", "Select an area to be get");
-    }
-    else{
         if(ui->trainig->isChecked()){
-            if(!this->network){
-                ui->actionNew_Descriptor->trigger();
+            if(!this->rectToDraw){
+                msg.critical(0,"ERROR", "Select an area to be get");
             }
-            try{
-                this->network->training();
-                ui->hashNumber->setText(ui->hashNumber->text() + " - Hash: " + QString::number(this->network->getHashSize()));
-                msg.setText(QString::number(this->network->getHashSize()));
-                msg.exec();
-            }
-            catch(exception& e){
-                qDebug() <<"ERROR, EXCEPTION: "<< e.what() << endl;
+            else{
+                if(!this->rects.isEmpty()){
+                    this->sizeOfRect.setHeight(this->rectToDraw->rect().height());
+                    this->sizeOfRect.setWidth(this->rectToDraw->rect().width());
+                }
+                if(this->sizeOfRect.isNull()){
+                    msg.warning(0,"Warning", "You should to set a parttern size");
+                    msg.exec();
+                }
+                else{
+                    if(!this->network)
+                        ui->actionNew_Descriptor->trigger();
+                    try{
+                        this->network->training();
+                        ui->hashNumber->setText(ui->hashNumber->text() + " - Hash: " + QString::number(this->network->getHashSize()));
+                        msg.setText(QString::number(this->network->getHashSize()));
+                        msg.exec();
+                    }
+                    catch(exception& e){
+                        qDebug() <<"ERROR, EXCEPTION: "<< e.what() << endl;
+                    }
+                }
             }
         }
         else if(ui->operation->isChecked()){
-            msg.setText(QString::number(this->network->recognize()));
-            msg.exec();
+            if(!this->network){
+                ui->actionNew_Descriptor->trigger();
+            }
+            vector<pair<Point, int>> vp = this->network->recognize(Point(0,0));
+            for(auto& v: vp){
+                this->imageinput->drawRect(v.first, Point(this->network->getSizeOfRect().width+v.first.x,this->network->getSizeOfRect().height+v.first.y));
+            }
         }
         else{
             msg.warning(0, "Warning","Select a Status Mode");
         }
-    }
 
     ui->stop->setEnabled(false);
 
@@ -294,8 +310,13 @@ void MainWindow::on_actionNew_triggered()
         this->rectToDraw->setPen((QPen(Qt::red, 3, Qt::SolidLine)));
         QRect rectangle(QPoint(0,0), this->sizeOfRect);
         this->scene->addItem(this->rectToDraw);
-        this->rectToDraw->setRect(rectangle);
+        this->rectToDraw->setRect(QRectF(rectangle));
+        this->set_BottomRight_topLeft_Points(this->rectToDraw->rect().topLeft().toPoint(), this->rectToDraw->rect() .bottomRight().toPoint());
+        this->imageinput->setCorrespondingPoins(0, 0, this->endPoint.x(), this->endPoint.y(),
+                                                this->imagePixmap->width(), this->imagePixmap->height());
         this->rects.append(this->rectToDraw);
+        this->imageinput->insertRect();
+        if(!ui->lineInputBits->text().isEmpty()) ui->numberRans->setText(QString::number((this->imageinput->rectangleSize())/(ui->lineInputBits->text()).toFloat()));
     }
     else{
         QMessageBox m;
@@ -344,21 +365,29 @@ void MainWindow::on_actionNew_Descriptor_triggered()
 void MainWindow::on_lineInputBits_textEdited(const QString &arg1)
 {
     QMessageBox msg;
-    if(this->rectToDraw==NULL){
-        msg.warning(0, "Warning", "Select a rectangle!");
-    }
-    else{
-        bool flag = true;
-        if(!(ui->lineInputBits->text().isEmpty())){
-            for(int i = 0;i<ui->lineInputBits->text().count();i++){ //If there is a non number in array
-                if(!ui->lineInputBits->text()[i].isNumber()) flag = false;
-            }
-            if(flag == true){
-                if(this->network) this->network->setRamNumberOfInputs(arg1.toUInt());
-                ui->numberRans->setText(QString::number((this->imageinput->rectangleSize())/arg1.toFloat()));
-            }
+    bool flag = true;
+    if(!(ui->lineInputBits->text().isEmpty())){
+        for(int i = 0;i<ui->lineInputBits->text().count();i++){ //If there is a non number in array
+            if(!ui->lineInputBits->text()[i].isNumber()) flag = false;
+        }
+        if(flag == true){
+            if(this->network) this->network->setRamNumberOfInputs(arg1.toUInt());
+            ui->numberRans->setText(QString::number((this->imageinput->rectangleSize())/arg1.toFloat()));
         }
     }
+    else{
+        msg.warning(0, "Warning", "Fill out this field!");
+    }
+}
+
+void MainWindow::on_actionSave_new_WNN_triggered()
+{
+    if(this->network) this->network->saveMap();
+}
+
+void MainWindow::on_actionOpen_WNN_triggered()
+{
+    if(this->network) this->network->read_a_map();
 }
 
 void MainWindow::resetAllValues()
@@ -370,11 +399,20 @@ void MainWindow::resetAllValues()
     delete this->rectToDraw;
     this->rectToDraw = NULL;
     this->rects.clear();
-    this->originPoint = QPoint(0,0);
-    this->endPoint = QPoint(0,0);
+    this->set_BottomRight_topLeft_Points(QPoint(0,0), QPoint(0,0));
     this->auxTomove = false;
     this->auxToSelect = true;
 
     ui->graphicsView->setPoint1(QPoint(0,0));
     ui->graphicsView->setPoint2(QPoint(0,0));
+}
+
+void MainWindow::set_BottomRight_topLeft_Points(QPoint _P1, QPoint _P2)
+{
+    this->originPoint = _P1;
+    this->endPoint = _P2;
+    ui->x1->setText("x1: "+QString::number(this->originPoint.x()));
+    ui->x2->setText("x2: "+QString::number(this->endPoint.x()));
+    ui->y2->setText("y2: "+QString::number(this->endPoint.y()));
+    ui->y1->setText("y1: "+QString::number(this->originPoint.y()));
 }

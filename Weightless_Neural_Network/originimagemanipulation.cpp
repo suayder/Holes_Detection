@@ -9,7 +9,7 @@ originImageManipulation::originImageManipulation()
 
 originImageManipulation::~originImageManipulation()
 {
-    this->deleteAuxMatrix();//((this->buttonRight.x - this->topLeft.x)*(this->buttonRight.y - this->topLeft.y));
+    if(this->auxRandom!=NULL) this->deleteAuxMatrix();//((this->buttonRight.x - this->topLeft.x)*(this->buttonRight.y - this->topLeft.y));
 }
 
 Point originImageManipulation::getTopLeft() const
@@ -57,8 +57,11 @@ void originImageManipulation::setCorrespondingPoins(int x1, int y1, int x2, int 
 
 void originImageManipulation::drawRect(Point topLeft, Point ButtonRiht)
 {
-    rectangle(this->image, topLeft, ButtonRiht, Scalar(0), 3,0,0);
-    imshow("image", this->image);
+    rectangle(this->image, topLeft, ButtonRiht, Scalar(255,0,255), 3,0,0);
+    Mat im;
+    resize(this->image, im,Size(this->image.cols/4, this->image.rows/5));
+    namedWindow("WINDOW", WINDOW_AUTOSIZE);
+    imshow("image", im);
     waitKey(0);
 }
 
@@ -72,7 +75,6 @@ int originImageManipulation::rectangleSize()
     }
 
 }
-
 
 char originImageManipulation::getRandomPoint() // This function return one binary value randommizing
 {
@@ -89,7 +91,7 @@ char originImageManipulation::getRandomPoint() // This function return one binar
         if((this->auxRandom[x][y]) == false){
             this->auxRandom[x][y] = true;//setar um valor para o pixel da imagem
 
-            /*qDebug() << "VALUE: " <<this->image.at<uchar>(aux);
+            qDebug() << "VALUE: " <<this->image.at<uchar>(aux);
             this->image.at<uchar>(aux) = 254;
 
             namedWindow( "Display window", WINDOW_AUTOSIZE );
@@ -113,8 +115,10 @@ void originImageManipulation::shufflePoints(int numberOfRans, int sizeOfvector)
         srand(clock());
         int x =rand()%(sizeOfvector);
         int x1 =rand()%(sizeOfvector);
-        SWAP(this->auxRandom[x],this->auxRandom[x1]);
-        i++;
+        if(x!=x1 && ((this->auxRandom[x]=='0' || this->auxRandom[x]=='1') && (this->auxRandom[x1]=='0' || this->auxRandom[x1]=='1'))){
+            SWAP(this->auxRandom[x],this->auxRandom[x1]);
+            i++;
+        }
     }
 }
 
@@ -126,15 +130,16 @@ Size originImageManipulation::getImageSize()
 void originImageManipulation::deleteAuxMatrix()
 {
     free(this->auxRandom);
+    this->auxRandom = NULL;
 }
 
-void originImageManipulation::allocateAuxMatrix(int row, int col)
+void originImageManipulation::allocateAuxMatrix(int col, int row)
 {
     int contAux = 0;
     this->auxRandom = (char*) malloc((row*col)*sizeof(char));
     for(int n = 0; n<row; n++){
         for(int m = 0; m < col; m++){
-            this->auxRandom[contAux] = ((this->image.at<uchar>((n+this->topLeft.x),(m+this->topLeft.y)) == 255)?'1':'0');
+            this->auxRandom[contAux] = ((this->image.at<uchar>((n+this->topLeft.y),(m+this->topLeft.x)) == 255)?'1':'0');
             contAux++;
             //this->image.at<uchar>((n+this->topLeft.x),(m+this->topLeft.y)) = 254;
             //namedWindow( "Display window", WINDOW_AUTOSIZE );
@@ -144,19 +149,20 @@ void originImageManipulation::allocateAuxMatrix(int row, int col)
     }
 }
 
-void originImageManipulation::allocateAuxMatrix(Point p, Size s)
+void originImageManipulation::allocateAuxMatrix(Point _P, Size s)
 {
+    int contAux = 0;
     this->auxRandom = (char*) malloc((s.area())*sizeof(char));
-    for(int n = 0; n<s.width; n++){
+    for(int n = 0; n< s.width; n++){
         for(int m = 0; m < s.height; m++){
-            //this->auxRandom[contAux] = ((this->image.at<uchar>((n+this->topLeft.x),(m+this->topLeft.y)) == 255)?'1':'0');
-            //contAux++;
-            this->image.at<uchar>((n+p.x),(m+p.y)) = 254;
-            namedWindow( "Display window", WINDOW_AUTOSIZE );
-            imshow("image", this->image);
-            waitKey(1);
+            this->auxRandom[contAux] = ((this->image.at<uchar>((m+_P.y),(n+_P.x)) == 255)?'1':'0');
+            contAux++;
+            //this->image.at<uchar>((m+_P.y),(n+_P.x)) = 254;
         }
     }
+    //namedWindow( "Display window", WINDOW_AUTOSIZE );
+    //imshow("image", this->image);
+    //waitKey(10);
 }
 
 void originImageManipulation::insertRect()

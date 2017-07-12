@@ -4,6 +4,8 @@
 #include <vector>
 #include <functional> //Library for hash
 
+#include <thread>
+
 #include "ram.h"
 #include "mapping.h"
 #include "originimagemanipulation.h"
@@ -22,7 +24,7 @@ public:
 
     void training();
 
-    int recognize();
+    vector<pair<Point, int>> recognize(Point);
 
     void fillRamVector(vector<RAM>&, unsigned int, unsigned int);
 
@@ -32,9 +34,15 @@ public:
     
     void setSizeOfRect(const int, const int, const int, const int);
 
-    int FunctionOfEachRect();
+    int FunctionOfEachRect(Point);
 
     void setRamNumberOfInputs(unsigned int value);
+
+    cv::Size getSizeOfRect() const;
+
+    void saveMap();
+
+    void read_a_map();
 
 private:
 
@@ -44,13 +52,15 @@ private:
 
     unsigned int ramNumber; //number of Rams
 
-    mapping mappingclass;
+    mapping mappingclass; //hash
 
     originImageManipulation **image;
 
     bool status; // if is operation or training mode
 
-    cv::Size sizeOfRect;
+    cv::Size sizeOfRect; //Standard size
+
+    int numOfIter; //This is couting number of rects trained
 
 };
 

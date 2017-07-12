@@ -3,11 +3,10 @@
 #include <QMessageBox>
 Descriptor::Descriptor(unsigned int ramNumberofInputs, originImageManipulation **image)
 {
-    qDebug()<< "NUMBER: " << ramNumber;
     this->image = image;
     this->ramNumberOfInputs = ramNumberofInputs;
     this->ramNumber = 0;
-    //(*this->image)->allocateAuxMatrix(Point(0,0), this->sizeOfRect); //Somente Para Teste
+    this->numOfIter = 0;
 }
 
 Descriptor::Descriptor(Size Sdefault, unsigned int ramNumberOfInputs, originImageManipulation **image)
@@ -16,6 +15,7 @@ Descriptor::Descriptor(Size Sdefault, unsigned int ramNumberOfInputs, originImag
     this->image = image;
     this->ramNumberOfInputs = ramNumberOfInputs;
     this->ramNumber = 0;
+    this->numOfIter = 0;
     //this->fillRamVector(this->ramVector, this->ramNumberOfInputs, this->ramNumber);
     this->sizeOfRect = Sdefault;
     //(*this->image)->allocateAuxMatrix(Sdefault, this->sizeOfRect); //Somente Para Teste
@@ -24,7 +24,8 @@ Descriptor::Descriptor(Size Sdefault, unsigned int ramNumberOfInputs, originImag
 void Descriptor::training()
 {
     int auxCont;
-    char *randomPoints;
+    char *randomPoints=NULL;
+    this->ramVector.clear();
     //Walks for all rects
     for(int p=0;p<((*this->image)->getVr()).size();p++){
         auxCont = 0;
@@ -32,54 +33,65 @@ void Descriptor::training()
                                           ((*this->image)->getVr()[p].first.x - (*this->image)->getVr()[p].second.x)*
                                           ((*this->image)->getVr()[p].first.y - (*this->image)->getVr()[p].second.y))/
                                          this->ramNumberOfInputs);
+        //************
+        qDebug() << "RAM NUMBER: "<<this->ramNumber;
+        qDebug() << "NUMBER IN EACH RAM: "<<this->ramNumberOfInputs;
+        qDebug()<<"TOTAL BITS IN RECT: " <<this->ramNumberOfInputs*this->ramNumber;
+        //**********
 
         this->fillRamVector(this->ramVector, this->ramNumberOfInputs, this->ramNumber);
+
+        qDebug()<<"RAM VECTOR SIZE: "<<this->ramVector.size();
+
         (*this->image)->setPointsWithinVector(p);
 
         (*this->image)->allocateAuxMatrix(((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x),
                                           ((*this->image)->getButtonRight().y - (*this->image)->getTopLeft().y));
-        qDebug() <<"NAo OK";
-        (*this->image)->shufflePoints(this->ramNumber, ((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x)*((*this->image)->getButtonRight().y - (*this->image)->getTopLeft().y));
+
+        qDebug()<<"SIZE OF AUX MATRIX: "<<(((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x)*
+                                           ((*this->image)->getButtonRight().y - (*this->image)->getTopLeft().y));
+
+        (*this->image)->shufflePoints(this->ramNumber, ABSOLUTEVALUE(((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x)*((*this->image)->getButtonRight().y - (*this->image)->getTopLeft().y)));
         randomPoints = (*this->image)->getAuxRandom();
-        qDebug() <<"OK";
 
         //Walks for all RAM vector
-        foreach(RAM ram, this->ramVector){
-
+        foreach(RAM ram, this->ramVector){            
             for(unsigned int j = 0; j<this->ramNumberOfInputs; j++){
-                //qDebug() <<"V: "<< (*this->image)->getRandomPoint();
                 ram.setInputstandart(randomPoints[auxCont]);
                 //ram.setInputstandart((*this->image)->getRandomPoint());
                 auxCont++;
             }
             this->mappingclass.insetIntoSet(ram.getInputstandart());
         }
+        //this->mappingclass.print_hash();
 
         (*this->image)->deleteAuxMatrix();
+        this->numOfIter++;
     }
     //qDebug()<< this->mappingclass.test();
 }
 
-int Descriptor::recognize()
+vector<pair<Point, int>> Descriptor::recognize(Point P) // Make multithreading
 {
-    int cont = 0, auxCont = 0;
-    char *randomPoints;
-    QMessageBox msg; //ATTENTION::: Erase this line of message
-    (*this->image)->allocateAuxMatrix(this->sizeOfRect.width, this->sizeOfRect.height);
-    (*this->image)->shufflePoints(this->ramNumber, this->sizeOfRect.width*this->sizeOfRect.height);
-    randomPoints = (*this->image)->getAuxRandom();
-    foreach (RAM ram, this->ramVector) {
-        for(unsigned int i = 0; i<this->ramNumberOfInputs; i++){
-            ram.setInputstandart(randomPoints[auxCont]);
-            auxCont++;
-        }
-
-        if(!this->mappingclass.searchPatterns(ram.getInputstandart())){
-            cont++;
+    //vector<std::thread> threads;
+    //thread threads;
+    vector<pair<Point, int>> vectorOfResults;
+    int resultFunction;
+    for(P.x+this->sizeOfRect.width;P.x+this->sizeOfRect.width<(*this->image)->getImageSize().width;P.x+=this->sizeOfRect.width){
+        P.y = 0;
+        for(P.y+this->sizeOfRect.height;P.y+this->sizeOfRect.height<(*this->image)->getImageSize().height;P.y+=this->sizeOfRect.height){
+            //thread threads(&Descriptor::FunctionOfEachRect, this, P);
+            //threads.join();
+            resultFunction = this->FunctionOfEachRect(P);
+            qDebug() <<"Result function: "<< resultFunction;
+            if(resultFunction>((this->mappingclass.getSetSize()/this->numOfIter)*0.8)){
+                vectorOfResults.push_back(make_pair(P, resultFunction));
+            }
         }
     }
-    (*this->image)->deleteAuxMatrix();
-    return cont;
+    //for(auto& t:threads)
+        //t.join();
+    return vectorOfResults;
 }
 
 void Descriptor::fillRamVector(vector<RAM> &ramV, unsigned int inputNumberBits, unsigned int ramNumber)
@@ -109,12 +121,12 @@ void Descriptor::setSizeOfRect(const int width, const int height, const int P_wi
     this->sizeOfRect = Size(w,h);
 }
 
-int Descriptor::FunctionOfEachRect()
+int Descriptor::FunctionOfEachRect(Point _P) //Just to recognize
 {
     int cont = 0;
     char *randomPoints;
 
-    (*this->image)->allocateAuxMatrix(this->sizeOfRect.width, this->sizeOfRect.height);
+    (*this->image)->allocateAuxMatrix(_P, this->sizeOfRect);
     (*this->image)->shufflePoints(this->ramNumber, this->sizeOfRect.width*this->sizeOfRect.height);
     randomPoints = (*this->image)->getAuxRandom();
     this->ramNumber = (unsigned int)(this->sizeOfRect.width*this->sizeOfRect.height)/this->ramNumberOfInputs;
@@ -123,18 +135,33 @@ int Descriptor::FunctionOfEachRect()
     for(int i=0; i<this->ramNumber;i++){
 
         if(i%this->ramNumberOfInputs==0){
-            if(!this->mappingclass.searchPatterns(_ram.getInputstandart())){
+            if(this->mappingclass.searchPatterns(_ram.getInputstandart())){
                 cont++;
             }
             _ram.deleteVector();
         }
         _ram.setInputstandart(randomPoints[i]);
     }
-    (*this->image)->deleteAuxMatrix();//((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x);
+    (*this->image)->deleteAuxMatrix(); //((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x);
     return cont;
 }
 
 void Descriptor::setRamNumberOfInputs(unsigned int value)
 {
     ramNumberOfInputs = value;
+}
+
+cv::Size Descriptor::getSizeOfRect() const
+{
+    return sizeOfRect;
+}
+
+void Descriptor::saveMap()
+{
+    this->mappingclass.writeHash("../Weightless_Neural_Network/fileSalved/file.bin", this->ramNumberOfInputs, this->numOfIter);
+}
+
+void Descriptor::read_a_map()
+{
+    this->mappingclass.readHash("../Weightless_Neural_Network/fileSalved/file.bin", this->numOfIter);
 }

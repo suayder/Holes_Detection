@@ -53,6 +53,8 @@ public:
 
     void resetAllValues();
 
+    void set_BottomRight_topLeft_Points(QPoint, QPoint);
+
 
 
 private slots:
@@ -79,6 +81,10 @@ private slots:
     void on_actionNew_Descriptor_triggered();
 
     void on_lineInputBits_textEdited(const QString &arg1);
+
+    void on_actionSave_new_WNN_triggered();
+
+    void on_actionOpen_WNN_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -11,11 +11,16 @@ mapping::mapping()
 
 void mapping::insetIntoSet(const vector<char> patterns)
 {
-    //if(this->searchPatterns(patterns) == false){
+    //if(patterns.size()==this->setSize){
     this->setPatterns.insert(patterns); //The set function doesn't instert repetead by itself
-    //this->setSize++;
-        //qDebug() << patterns;
+    //qDebug() << patterns;
     //}
+}
+
+void mapping::print_hash()
+{
+    for(auto r:this->setPatterns)
+        qDebug()<<r;
 }
 
 bool mapping::searchPatterns(const vector<char> bitsToFind)
@@ -31,8 +36,49 @@ int mapping::getSetSize() const
 bool mapping::test()
 {
     foreach(auto c, this->setPatterns){
-        qDebug() << c;
         if(c.size()<7) return true;
     }
     return false;
+}
+
+void mapping::writeHash(string filePath, int sizeVector, int numiter)
+{
+    ofstream output;
+    output.open(filePath);
+    output << sizeVector<<endl;
+    output<<numiter;
+    for(auto& vectorInHash:this->setPatterns){
+        output<<"\n";
+        for(auto& values: vectorInHash){
+            output << values;
+        }
+    }
+    output.close();
+}
+
+void mapping::readHash(string filePath, int& numiter)
+{
+    ifstream input;
+    char auxiliary;
+    string sizeOfVector;
+    int i;
+    input.open(filePath);
+    getline(input, sizeOfVector);
+    i = stoi(sizeOfVector);
+    getline(input, sizeOfVector);
+    numiter = stoi(sizeOfVector);
+    if(input.is_open()){
+        this->setPatterns.clear();
+        while(input >> auxiliary){
+            this->patterns.push_back(auxiliary);
+            if(this->patterns.size()==i){
+                this->setPatterns.insert(this->patterns);
+                this->patterns.clear();
+            }
+        }
+    }
+    else{
+        cout<<"ERROR: Cannot open file"<<endl;
+    }
+    input.close();
 }
