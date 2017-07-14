@@ -1,33 +1,34 @@
 #include "ram.h"
 #include <QDebug>
 
+
+void RAM::setTrigger()
+{
+    this->trigger = true;
+}
+
+void RAM::resetTrigger()
+{
+    this->trigger = false;
+}
+
+bool RAM::getTrigger() const
+{
+    return trigger;
+}
+
 RAM::RAM(unsigned int inputBitsNumber)
 {
     this->inputAmount = inputBitsNumber;
+    this->trigger = false;
 }
 
 RAM::~RAM()
 {
-    this->inputstandart.clear();
 }
 
-vector<char> RAM::getInputstandart() const
+void RAM::insertValue_this_ram(int iter, string inputstandart)
 {
-    return inputstandart;
-}
-
-void RAM::setInputstandart(char value)
-{
-    try{
-        this->inputstandart.push_back(value);
-        //qDebug()<< value;
-    }
-    catch(...){
-        qDebug() << "ERROR";
-    }
-}
-
-void RAM::deleteVector()
-{
-    this->inputstandart.clear();
+    if(inputstandart.length()==this->inputAmount)
+        this->valueThisRam.insetIntoSet(inputstandart, iter);
 }

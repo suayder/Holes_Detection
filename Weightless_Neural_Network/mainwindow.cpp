@@ -121,14 +121,19 @@ void MainWindow::mouse_Move()
         this->scene->addItem(this->rectToDraw);
         this->rectToDraw->setRect(rectangle);
 
+
+        this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(),
+                                                this->endPoint.x(), this->endPoint.y(),
+                                                this->imagePixmap->width(), this->imagePixmap->height());
+
         // Set points in the ui
 
-        ui->x1->setText("x1: " + QString::number(this->originPoint.x()));
-        ui->y1->setText("y1: " + QString::number(this->originPoint.y(), 10));
-        ui->x2->setText("x2: " + QString::number(ui->graphicsView->getPoint2().x()));
-        ui->y2->setText("y2: " + QString::number(ui->graphicsView->getPoint2().y()));
-        if(this->network && this->network->getHashSize()>0) ui->hashNumber->setText("Rect Size: " + QString::number(ui->graphicsView->sizeframe()) + " - Hash: " + QString::number(this->network->getHashSize()));
-        else ui->hashNumber->setText("Rect Size: " + QString::number(ui->graphicsView->sizeframe()));
+        ui->x1->setText("x1: " + QString::number(this->imageinput->getTopLeft().x));
+        ui->y1->setText("y1: " + QString::number(this->imageinput->getTopLeft().y));
+        ui->x2->setText("x2: " + QString::number(this->imageinput->getButtonRight().x));
+        ui->y2->setText("y2: " + QString::number(this->imageinput->getButtonRight().y));
+        ui->labelRectSize->setText(QString::number((this->imageinput->rectangleSize())));
+        if(this->network && this->network->getHashSize()>0) ui->hashNumber->setText("Hash: " + QString::number(this->network->getHashSize()));
 
         this->auxToSelect = false;
 
@@ -158,8 +163,7 @@ void MainWindow::mouse_Release()
            this->imageinput->insertRect();
        }
 
-       if(this->network && this->network->getHashSize()>0) ui->hashNumber->setText("Rect Size: " + QString::number(ui->graphicsView->sizeframe()) + " - Hash: " + QString::number(this->network->getHashSize()));
-       else ui->hashNumber->setText("Rect Size: " + QString::number(ui->graphicsView->sizeframe()));
+       if(this->network && this->network->getHashSize()>0) ui->hashNumber->setText("Hash: " + QString::number(this->network->getHashSize()));
 
        if(!ui->lineInputBits->text().isEmpty()) ui->numberRans->setText(QString::number((this->imageinput->rectangleSize())/(ui->lineInputBits->text()).toFloat()));
   }
@@ -169,7 +173,7 @@ void MainWindow::mouse_Release()
   this->auxWidth2 = 0;
   this->auxTomove = false;
   this->auxToSelect = true;
-  //  qDebug() << QString::number( this->scene->sizeframe());
+  //  qDebug() << QString::number(this->scene->sizeframe());
 }
 
 void MainWindow::on_start_clicked()
@@ -195,7 +199,7 @@ void MainWindow::on_start_clicked()
                         ui->actionNew_Descriptor->trigger();
                     try{
                         this->network->training();
-                        ui->hashNumber->setText(ui->hashNumber->text() + " - Hash: " + QString::number(this->network->getHashSize()));
+                        ui->hashNumber->setText("Hash: " + QString::number(this->network->getHashSize()));
                         msg.setText(QString::number(this->network->getHashSize()));
                         msg.exec();
                     }
@@ -207,11 +211,14 @@ void MainWindow::on_start_clicked()
         }
         else if(ui->operation->isChecked()){
             if(!this->network){
-                ui->actionNew_Descriptor->trigger();
+                msg.setText("You have to set a descriptor");
+                msg.exec();
             }
-            vector<pair<Point, int>> vp = this->network->recognize(Point(0,0));
-            for(auto& v: vp){
-                this->imageinput->drawRect(v.first, Point(this->network->getSizeOfRect().width+v.first.x,this->network->getSizeOfRect().height+v.first.y));
+            else{
+                vector<pair<Point, int>> vp = this->network->recognize(Point(0,0));
+                for(auto& v: vp){
+                    this->imageinput->drawRect(v.first, Point(this->network->getSizeOfRect().width+v.first.x,this->network->getSizeOfRect().height+v.first.y));
+                }
             }
         }
         else{
@@ -382,12 +389,28 @@ void MainWindow::on_lineInputBits_textEdited(const QString &arg1)
 
 void MainWindow::on_actionSave_new_WNN_triggered()
 {
-    if(this->network) this->network->saveMap();
+    QMessageBox msg;
+    if(this->network) {
+        this->network->saveMap();
+        msg.setText("Successful");
+        msg.exec();
+    }
 }
 
 void MainWindow::on_actionOpen_WNN_triggered()
 {
-    if(this->network) this->network->read_a_map();
+    QMessageBox msg;
+    if(!this->network){
+        ui->actionNew_Descriptor->trigger();
+    }
+    try{
+        this->network->read_a_map();
+        ui->hashNumber->setText("Hash Number: "+ QString::number(this->network->getHashSize()));    
+    }
+    catch(...){
+        msg.setText("ERROR, Exception ocurred on open wwn");
+        msg.exec();
+    }
 }
 
 void MainWindow::resetAllValues()
@@ -415,4 +438,24 @@ void MainWindow::set_BottomRight_topLeft_Points(QPoint _P1, QPoint _P2)
     ui->x2->setText("x2: "+QString::number(this->endPoint.x()));
     ui->y2->setText("y2: "+QString::number(this->endPoint.y()));
     ui->y1->setText("y1: "+QString::number(this->originPoint.y()));
+    if(this->network && this->network->getHashSize()>0) ui->hashNumber->setText("Rect Size: " + QString::number(ui->graphicsView->sizeframe()) + " - Hash: " + QString::number(this->network->getHashSize()));
+    else{
+        ui->hashNumber->setText("");
+        ui->hashNumber->setText("Rect Size: " + QString::number(ui->graphicsView->sizeframe()));
+    }
+}
+
+void MainWindow::on_bottonSetInputs_clicked()
+{
+    QMessageBox msg;
+    if(this->network!=NULL || ui->labelRectSize->text().isEmpty()){
+        msg.warning(0, "Warning", "Verify if any field is missing or already exist a discriminator");
+    }
+    else{
+        this->sizeOfRect.setHeight(this->rectToDraw->rect().height());
+        this->sizeOfRect.setWidth(this->rectToDraw->rect().width());
+        this->network = new Descriptor(Size(this->sizeOfRect.width()*(this->imageinput->getImageSize().width/this->imagePixmap->width()),
+                                        this->sizeOfRect.height()*(this->imageinput->getImageSize().height/this->imagePixmap->height())),
+                                       ui->lineInputBits->text().toInt(), &this->imageinput);
+    }
 }

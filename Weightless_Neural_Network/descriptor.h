@@ -2,7 +2,6 @@
 #define DESCRIPTOR_H
 
 #include <vector>
-#include <functional> //Library for hash
 
 #include <thread>
 
@@ -26,11 +25,9 @@ public:
 
     vector<pair<Point, int>> recognize(Point);
 
-    void fillRamVector(vector<RAM>&, unsigned int, unsigned int);
+    void fillRamVector();
 
     int getHashSize();
-
-    void deleteAllVector();
     
     void setSizeOfRect(const int, const int, const int, const int);
 
@@ -52,7 +49,7 @@ private:
 
     unsigned int ramNumber; //number of Rams
 
-    mapping mappingclass; //hash
+    mapping mappingclass; //hash  NOT EXIST MORE
 
     originImageManipulation **image;
 

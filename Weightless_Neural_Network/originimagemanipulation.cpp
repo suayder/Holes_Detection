@@ -41,8 +41,19 @@ void originImageManipulation::imageRead(String directory)
 
 void originImageManipulation::thresholding()
 {
-
- threshold(this->image, this->image, 127, 255, THRESH_BINARY);
+    Mat im;
+    unsigned long int sum_of_image = 0;
+    for(int i = 0;i<=this->image.cols;i++){
+        for(int j=0;j<=this->image.rows;j++){
+            sum_of_image+=this->image.at<uchar>(j,i);
+        }
+    }
+    sum_of_image /=(this->image.rows*this->image.cols);
+    threshold(this->image, this->image, sum_of_image, 255, THRESH_BINARY);
+    //resize(this->image, im,Size(this->image.cols/4, this->image.rows/5));
+    //namedWindow("WINDOW", WINDOW_AUTOSIZE);
+    //imshow("image", im);
+    //waitKey(0);
 
 }
 

@@ -5,40 +5,32 @@
 
 mapping::mapping()
 {
-    this->setSize = 0;
-
 }
 
-void mapping::insetIntoSet(const vector<char> patterns)
+mapping::~mapping()
 {
-    //if(patterns.size()==this->setSize){
-    this->setPatterns.insert(patterns); //The set function doesn't instert repetead by itself
-    //qDebug() << patterns;
-    //}
+    this->patterns.clear();
+}
+
+void mapping::insetIntoSet(const string patterns, int numIter)
+{
+    this->setPatterns.insert({numIter, patterns});
 }
 
 void mapping::print_hash()
 {
     for(auto r:this->setPatterns)
-        qDebug()<<r;
+        qDebug()<<"Partterns: "<<r.first;
 }
 
-bool mapping::searchPatterns(const vector<char> bitsToFind)
+bool mapping::searchPatterns(const int iteratorInRam)
 {
-    return (this->setPatterns.find(bitsToFind) != this->setPatterns.end());
+    return (this->setPatterns.find(iteratorInRam) != this->setPatterns.end());
 }
 
 int mapping::getSetSize() const
 {
     return this->setPatterns.size();
-}
-
-bool mapping::test()
-{
-    foreach(auto c, this->setPatterns){
-        if(c.size()<7) return true;
-    }
-    return false;
 }
 
 void mapping::writeHash(string filePath, int sizeVector, int numiter)
@@ -47,13 +39,14 @@ void mapping::writeHash(string filePath, int sizeVector, int numiter)
     output.open(filePath);
     output << sizeVector<<endl;
     output<<numiter;
-    for(auto& vectorInHash:this->setPatterns){
+    /*for(auto& vectorInHash:this->setPatterns){
         output<<"\n";
         for(auto& values: vectorInHash){
             output << values;
         }
-    }
+    }*/
     output.close();
+
 }
 
 void mapping::readHash(string filePath, int& numiter)
@@ -67,7 +60,7 @@ void mapping::readHash(string filePath, int& numiter)
     i = stoi(sizeOfVector);
     getline(input, sizeOfVector);
     numiter = stoi(sizeOfVector);
-    if(input.is_open()){
+    /*if(input.is_open()){
         this->setPatterns.clear();
         while(input >> auxiliary){
             this->patterns.push_back(auxiliary);
@@ -79,6 +72,6 @@ void mapping::readHash(string filePath, int& numiter)
     }
     else{
         cout<<"ERROR: Cannot open file"<<endl;
-    }
+    }*/
     input.close();
 }

@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <iostream>
-#include <set>
+#include <unordered_map>
 #include <fstream>
 #include <string>
 
@@ -17,16 +17,15 @@ class mapping
 {
 public:
     mapping();
+    ~mapping();
 
-    void insetIntoSet(const vector<char> patterns);
+    void insetIntoSet(const string patterns, int numIter);
 
     void print_hash(); //Only for test
 
-    bool searchPatterns(const vector<char> bitsToFind);
+    bool searchPatterns(const int iteratorInRam);
 
     int getSetSize() const;
-
-    bool test();
 
     void writeHash(string filePath, int sizeVector, int numiter);
 
@@ -34,9 +33,8 @@ public:
 
 private:
 
-    vector<char> patterns;
-    set<vector<char>> setPatterns;
-    int setSize;
+    string patterns;
+    unordered_map<int, string> setPatterns;
 
 };
 

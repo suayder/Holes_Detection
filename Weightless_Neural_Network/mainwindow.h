@@ -86,6 +86,8 @@ private slots:
 
     void on_actionOpen_WNN_triggered();
 
+    void on_bottonSetInputs_clicked();
+
 private:
     Ui::MainWindow *ui;
 
