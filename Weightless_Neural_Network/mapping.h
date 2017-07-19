@@ -17,24 +17,21 @@ class mapping
 {
 public:
     mapping();
-    ~mapping();
 
     void insetIntoSet(const string patterns, int numIter);
 
     void print_hash(); //Only for test
 
-    bool searchPatterns(const int iteratorInRam);
+    bool searchPatterns(const string valueToSearch);
 
     int getSetSize() const;
 
-    void writeHash(string filePath, int sizeVector, int numiter);
-
-    void readHash(string filePath, int& numiter);
+    unordered_multimap<string, int> getSetPatterns() const;
 
 private:
 
     string patterns;
-    unordered_map<int, string> setPatterns;
+    unordered_multimap<string,int> setPatterns;
 
 };
 

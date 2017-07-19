@@ -13,10 +13,10 @@ Descriptor::Descriptor(Size Sdefault, unsigned int ramNumberOfInputs, originImag
 {
     this->image = image;
     this->ramNumberOfInputs = ramNumberOfInputs;
+    this->sizeOfRect = Sdefault;
     this->ramNumber = Sdefault.area()/ramNumberOfInputs;
     this->numOfIter = 0;
     //this->fillRamVector(this->ramVector, this->ramNumberOfInputs, this->ramNumber);
-    this->sizeOfRect = Sdefault;
     this->fillRamVector();
 }
 
@@ -24,16 +24,14 @@ void Descriptor::training()
 {
     int auxCont;
     char *randomPoints=NULL;
-    string aux_get_inputs;
-
     //Walks for all rects
+    string aux_get_inputs;
     for(int p=0;p<((*this->image)->getVr()).size();p++){
         auxCont = 0;
 
         //************
         qDebug() << "NUMBER IN EACH RAM: "<<this->ramNumberOfInputs;
         qDebug()<<"TOTAL BITS IN RECT: " <<this->ramNumberOfInputs*this->ramNumber;
-        qDebug()<<"TOTAL BITS IN RECT - " <<this->sizeOfRect.area();
         qDebug()<<"RAM NUMBER: " <<this->ramNumber;
         //**********
 
@@ -53,27 +51,25 @@ void Descriptor::training()
         randomPoints = (*this->image)->getAuxRandom();
 
         //Walks for all RAM vector
-        foreach(RAM ram, this->ramVector){
+        //qDebug()<<randomPoints;
+        for(RAM& ram:this->ramVector){
             for(unsigned int j = 0; j<this->ramNumberOfInputs; j++){
-                aux_get_inputs.append(&randomPoints[auxCont]);
+                aux_get_inputs.push_back(randomPoints[auxCont]);
                 auxCont++;
             }
-            //qDebug()<< auxCont;
-            ram.insertValue_this_ram(1, aux_get_inputs);
+            ram.insertValue_this_ram(aux_get_inputs, 1);
+            //qDebug()<<QString::fromStdString(aux_get_inputs);
+            //qDebug()<<this->ramVector.size();
+            //this->ramVector.at(0).print();
             aux_get_inputs.clear();
         }
-
-        //this->mappingclass.print_hash();
-
         (*this->image)->deleteAuxMatrix();
-        this->numOfIter++;
     }
-    //qDebug()<< this->mappingclass.test();
 }
 
 vector<pair<Point, int>> Descriptor::recognize(Point P) // Make multithreading
 {
-  /*  //vector<std::thread> threads;
+    //vector<std::thread> threads;
     //thread threads;
     vector<pair<Point, int>> vectorOfResults;
     int resultFunction;
@@ -84,14 +80,14 @@ vector<pair<Point, int>> Descriptor::recognize(Point P) // Make multithreading
             //threads.join();
             resultFunction = this->FunctionOfEachRect(P);
             qDebug() <<"Result function: "<< resultFunction;
-            if(resultFunction>((this->mappingclass.getSetSize()/this->numOfIter)*0.8)){
+            if(resultFunction>(this->ramVector.size()*0.8)){
                 vectorOfResults.push_back(make_pair(P, resultFunction));
             }
         }
     }
     //for(auto& t:threads)
         //t.join();
-    return vectorOfResults;*/
+    return vectorOfResults;
 }
 
 void Descriptor::fillRamVector()
@@ -102,46 +98,36 @@ void Descriptor::fillRamVector()
     }
 }
 
-int Descriptor::getHashSize()
-{
-    return this->mappingclass.getSetSize();
-}
-
 void Descriptor::setSizeOfRect(const int width, const int height, const int P_width, const int P_heigth) //P_width = Pixmap width
 {
     int w = ((*this->image)->getImageSize().width/P_width)*width;
     int h = ((*this->image)->getImageSize().height/P_heigth)*height;
     this->sizeOfRect = Size(w,h);
 }
-/*
+
 int Descriptor::FunctionOfEachRect(Point _P) //Just to recognize
 {
-    int cont = 0;
+    int cont = 0, ramReference = 0;
     char *randomPoints;
+    string aux_get_inputs;
 
     (*this->image)->allocateAuxMatrix(_P, this->sizeOfRect);
     (*this->image)->shufflePoints(this->ramNumber, this->sizeOfRect.width*this->sizeOfRect.height);
     randomPoints = (*this->image)->getAuxRandom();
     this->ramNumber = (unsigned int)(this->sizeOfRect.width*this->sizeOfRect.height)/this->ramNumberOfInputs;
-    RAM _ram(this->ramNumberOfInputs);
+    //RAM _ram(this->ramNumberOfInputs);
 
     for(int i=0; i<this->ramNumber;i++){
+        aux_get_inputs.push_back(randomPoints[i]);
 
         if(i%this->ramNumberOfInputs==0){
-            if(this->mappingclass.searchPatterns(_ram.getInputstandart())){
+            if(this->ramVector.at(ramReference).search_Pattern(aux_get_inputs))
                 cont++;
-            }
-            _ram.deleteVector();
+            aux_get_inputs.clear();
         }
-        _ram.setInputstandart(randomPoints[i]);
     }
     (*this->image)->deleteAuxMatrix(); //((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x);
     return cont;
-}*/
-
-void Descriptor::setRamNumberOfInputs(unsigned int value)
-{
-    ramNumberOfInputs = value;
 }
 
 cv::Size Descriptor::getSizeOfRect() const
@@ -149,12 +135,49 @@ cv::Size Descriptor::getSizeOfRect() const
     return sizeOfRect;
 }
 
-void Descriptor::saveMap()
+void Descriptor::saveNetwork()
 {
-    this->mappingclass.writeHash("../Weightless_Neural_Network/fileSalved/file.bin", this->ramNumberOfInputs, this->numOfIter);
+    ofstream output;
+    output.open("../Weightless_Neural_Network/fileSalved/file.txt");
+    output << this->ramNumberOfInputs<<endl; //Number of inputs on each ram
+    output<<this->ramNumber<<endl; //Number of rans
+    output<<((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x)<<endl;//Width
+    output<<((*this->image)->getButtonRight().y - (*this->image)->getTopLeft().y); //Height
+    for(auto _ram:this->ramVector){
+        output<<"\n";
+        output<<"-";
+        for(auto &valueThisRam:_ram.getMap()){
+           output<<"\n";
+           output<<valueThisRam.first<<","<<valueThisRam.second;
+        }
+    }
+    output.close();
 }
 
 void Descriptor::read_a_map()
 {
-    this->mappingclass.readHash("../Weightless_Neural_Network/fileSalved/file.bin", this->numOfIter);
+    ifstream input;
+    char auxiliary;
+    int i;
+    input.open("../Weightless_Neural_Network/fileSalved/file.bin");
+    getline(input, this->ramNumberOfInputs);
+    getline(input, this->ramNumber);
+    i = stoi(sizeOfVector);
+    getline(input, sizeOfVector);
+    numiter = stoi(sizeOfVector);
+    /*if(input.is_open()){
+        this->setPatterns.clear();
+        while(input >> auxiliary){
+            this->patterns.push_back(auxiliary);
+            if(this->patterns.size()==i){
+                this->setPatterns.insert(this->patterns);
+                this->patterns.clear();
+            }
+        }
+    }
+    else{
+        cout<<"ERROR: Cannot open file"<<endl;
+    }*/
+    input.close();
+    //this->mappingclass.readHash(, this- >numOfIter);
 }

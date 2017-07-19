@@ -2,7 +2,7 @@
 #define DESCRIPTOR_H
 
 #include <vector>
-
+#include <string>
 #include <thread>
 
 #include "ram.h"
@@ -26,8 +26,6 @@ public:
     vector<pair<Point, int>> recognize(Point);
 
     void fillRamVector();
-
-    int getHashSize();
     
     void setSizeOfRect(const int, const int, const int, const int);
 
@@ -37,9 +35,14 @@ public:
 
     cv::Size getSizeOfRect() const;
 
-    void saveMap();
+    void saveNetwork();
 
     void read_a_map();
+
+    void p(){ //ERASE THIS FUNCTION
+        RAM r = this->ramVector.at(0);
+        r.print();
+    }
 
 private:
 
@@ -48,8 +51,6 @@ private:
     unsigned int ramNumberOfInputs; //Number of bits sequence in each ram
 
     unsigned int ramNumber; //number of Rams
-
-    mapping mappingclass; //hash  NOT EXIST MORE
 
     originImageManipulation **image;
 

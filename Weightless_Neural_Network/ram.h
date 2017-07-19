@@ -3,9 +3,9 @@
 
 #include <iostream>
 #include <vector>
-#include <iterator>
+#include <unordered_map>
 #include "mapping.h"
-
+#include <QDebug>
 using namespace std;
 
 class RAM{
@@ -20,13 +20,18 @@ private:
 public:
     RAM(unsigned int inputBitsNumber);
 
-    ~RAM();
-
-    void insertValue_this_ram(int,string);
+    void insertValue_this_ram(string, int);
+    bool search_Pattern(string);
 
     void setTrigger();
     void resetTrigger();
     bool getTrigger() const;
+
+    unordered_multimap<string, int> getMap();
+
+    void print(){ //THIS FUNCTION HAS BEEN TO ERASE
+        this->valueThisRam.print_hash();
+    }
 };
 
 #endif // RAM_H
