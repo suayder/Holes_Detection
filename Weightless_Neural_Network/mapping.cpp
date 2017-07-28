@@ -1,5 +1,4 @@
 #include "mapping.h"
-
 #include<QDebug>
 #include <QMessageBox>
 
@@ -15,7 +14,7 @@ void mapping::insetIntoSet(const string patterns, int numIter)
 
 void mapping::print_hash()
 {
-    qDebug()<<"HERE"<<this->setPatterns.size();
+    qDebug()<<"HERE: "<<this->setPatterns.size();
     for(auto& r:this->setPatterns)
         qDebug()<<"Partterns: "<<QString::fromStdString(r.first);
     qDebug()<<"FINISH";

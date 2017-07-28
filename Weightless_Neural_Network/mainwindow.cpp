@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
     ui->stop->setEnabled(false);
+    ui->textConsole->setReadOnly(true);
+    this->flagToOperating = false;
     this->imageinput = NULL;
     this->imagePixmap = NULL;
     this->rectToDraw = NULL;
@@ -69,10 +71,11 @@ void MainWindow::mouse_is_clicked() //If was pressed
            this->rectToDraw = rect;
            this->originPoint = this->rectToDraw->rect().topLeft().toPoint();
            this->endPoint = this->rectToDraw->rect().bottomRight().toPoint();
-           ui->x1->setText("x1: " + QString::number(this->originPoint.x()));
-           ui->y1->setText("y1: " + QString::number(this->originPoint.y(), 10));
-           ui->x2->setText("x2: " + QString::number(this->endPoint.x()));
-           ui->y2->setText("y2: " + QString::number(this->endPoint.y()));
+
+           ui->x1->setText("x1: " + QString::number(this->imageinput->getTopLeft().x));
+           ui->y1->setText("y1: " + QString::number(this->imageinput->getTopLeft().y));
+           ui->x2->setText("x2: " + QString::number(this->imageinput->getButtonRight().x));
+           ui->y2->setText("y2: " + QString::number(this->imageinput->getButtonRight().y));
            break;
        }
     }
@@ -101,7 +104,7 @@ void MainWindow::mouse_Move()
     if(this->scene!=NULL){
 
 
-        if(this->rectToDraw->isUnderMouse() && this->auxTomove == true){
+        if(this->rectToDraw->isUnderMouse() && this->auxTomove == true){ //when you are moving a rectangle
 
             this->originPoint.setY((ui->graphicsView->getPoint2().y()) - this->auxHeight1);
             this->originPoint.setX((ui->graphicsView->getPoint2().x()) - this->auxWidth1);
@@ -111,9 +114,32 @@ void MainWindow::mouse_Move()
 
             ui->graphicsView->setPoint1(this->originPoint);
             ui->graphicsView->setPoint2(this->endPoint);
+
+            if(this->network){
+                this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(), this->imagePixmap->width(), this->imagePixmap->height(), this->network->getSizeOfRect());
+
+                if(this->flagToOperating == true){ //Dragging while it's working
+
+                    int r = this->network->FunctionOfEachRect(this->imageinput->getTopLeft());
+                    if(r>=this->network->getRamNumber()*0.8)
+                        ui->textConsole->setTextColor(QColor(Qt::red));
+                    else
+                        ui->textConsole->setTextColor(QColor(Qt::black));
+                    ui->textConsole->append("Rams fired: "+QString::number(r));
+                }
+            }
+            else{
+                this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(),
+                                                        this->endPoint.x(), this->endPoint.y(),
+                                                        this->imagePixmap->width(), this->imagePixmap->height());
+            }
         }
         else{
             this->endPoint = ui->graphicsView->getPoint2(); //Only when is creating a new rectangle
+
+            this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(),
+                                                    this->endPoint.x(), this->endPoint.y(),
+                                                    this->imagePixmap->width(), this->imagePixmap->height());
         }
 
         QRect rectangle(this->originPoint, this->endPoint);
@@ -121,10 +147,6 @@ void MainWindow::mouse_Move()
         this->scene->addItem(this->rectToDraw);
         this->rectToDraw->setRect(rectangle);
 
-
-        this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(),
-                                                this->endPoint.x(), this->endPoint.y(),
-                                                this->imagePixmap->width(), this->imagePixmap->height());
 
         // Set points in the ui
 
@@ -136,9 +158,6 @@ void MainWindow::mouse_Move()
         //if(this->network && this->network->p()>0) ui->hashNumber->setText("Hash: " + QString::number(this->network->p()));
 
         this->auxToSelect = false;
-
-        qDebug()<<"ORIGIN POINT: "<<this->originPoint;
-        qDebug()<<"END POINT: "<<this->endPoint;
 
     }
 }
@@ -154,9 +173,14 @@ void MainWindow::mouse_Release()
           this->imageinput->setTopLeft(Point(this->originPoint.x(),this->originPoint.y()));
           this->imageinput->setButtonRight(Point(this->endPoint.x(), this->endPoint.y()));
       }
-      this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(),
-                                              this->endPoint.x(), this->endPoint.y(),
-                                              this->imagePixmap->width(), this->imagePixmap->height());
+      if(this->network){
+          this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(), this->imagePixmap->width(), this->imagePixmap->height(), this->network->getSizeOfRect());
+      }
+      else{
+          this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(),
+                                                  this->endPoint.x(), this->endPoint.y(),
+                                                  this->imagePixmap->width(), this->imagePixmap->height());
+      }
 
        //qDebug() << "X: Origin Point"<< QString::number(this->originPoint.x()); // Size in the originaly image
 
@@ -202,7 +226,6 @@ void MainWindow::on_start_clicked()
                         ui->actionNew_Descriptor->trigger();
                     try{
                         this->network->training();
-                        //ui->hashNumber->setText("Hash: " + QString::number(this->network->p()));
                         this->network->p();
                     }
                     catch(exception& e){
@@ -210,6 +233,7 @@ void MainWindow::on_start_clicked()
                     }
                 }
             }
+            ui->stop->setEnabled(false);
         }
         else if(ui->operation->isChecked()){
             if(!this->network){
@@ -217,18 +241,29 @@ void MainWindow::on_start_clicked()
                 msg.exec();
             }
             else{
-                vector<pair<Point, int>> vp = this->network->recognize(Point(0,0));
-                for(auto& v: vp){
-                    this->imageinput->drawRect(v.first, Point(this->network->getSizeOfRect().width+v.first.x,this->network->getSizeOfRect().height+v.first.y));
-                }
+                //vector<pair<Point, int>> vp = this->network->recognize(Point(0,0));
+                //for(auto& v: vp){
+                //    this->imageinput->drawRect(v.first, Point(this->network->getSizeOfRect().width+v.first.x,this->network->getSizeOfRect().height+v.first.y));
+                //}
+                int r = this->network->FunctionOfEachRect(this->imageinput->getTopLeft());
+                if(r>=this->network->getRamNumber()*0.8)
+                    ui->textConsole->setTextColor(QColor(Qt::red));
+                else
+                    ui->textConsole->setTextColor(QColor(Qt::black));
+                ui->textConsole->append("Rams fired: "+QString::number(r));
+                this->flagToOperating = true;
             }
         }
         else{
             msg.warning(0, "Warning","Select a Status Mode");
         }
 
-    ui->stop->setEnabled(false);
+}
 
+void MainWindow::on_stop_clicked()
+{
+    this->flagToOperating = false;
+    ui->stop->setEnabled(false);
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *ev)
@@ -265,6 +300,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *ev)
                 //ui->hashNumber->setText("Rect Size: " + QString::number(ui->graphicsView->sizeframe()));
             }
         }
+    }
+    if(ev->key() == Qt::Key_N){
+        ui->actionNew->trigger();
     }
 
 }
@@ -315,14 +353,20 @@ void MainWindow::on_Salve_DBF_triggered()
 void MainWindow::on_actionNew_triggered()
 {
     if(this->sizeOfRect!=QSize(0,0)){
+
         this->rectToDraw = new QGraphicsRectItem();
         this->rectToDraw->setPen((QPen(Qt::red, 3, Qt::SolidLine)));
         QRect rectangle(QPoint(0,0), this->sizeOfRect);
         this->scene->addItem(this->rectToDraw);
         this->rectToDraw->setRect(QRectF(rectangle));
-        this->set_BottomRight_topLeft_Points(this->rectToDraw->rect().topLeft().toPoint(), this->rectToDraw->rect() .bottomRight().toPoint());
-        this->imageinput->setCorrespondingPoins(0, 0, this->endPoint.x(), this->endPoint.y(),
-                                                this->imagePixmap->width(), this->imagePixmap->height());
+
+        //this->endPoint = this->rectToDraw->rect().bottomRight().toPoint();
+        this->imageinput->setTopLeft(Point(0,0));
+        this->imageinput->setButtonRight(Point(this->network->getSizeOfRect().width,this->network->getSizeOfRect().height));
+        qDebug()<<this->imageinput->getButtonRight().x<<this->imageinput->getButtonRight().y;
+        //this->imageinput->setCorrespondingPoins(0, 0, this->endPoint.x(), this->endPoint.y(),
+         //                                       this->imagePixmap->width(), this->imagePixmap->height());
+        this->set_BottomRight_topLeft_Points(this->rectToDraw->rect().topLeft().toPoint(), this->rectToDraw->rect().bottomRight().toPoint());
         this->rects.append(this->rectToDraw);
         this->imageinput->insertRect();
         if(!ui->lineInputBits->text().isEmpty()) ui->numberRans->setText(QString::number((this->imageinput->rectangleSize())/(ui->lineInputBits->text()).toFloat()));
@@ -399,14 +443,14 @@ void MainWindow::on_actionSave_new_WNN_triggered()
     }
 }
 
-void MainWindow::on_actionOpen_WNN_triggered()
+void MainWindow::on_Load_WNN_triggered()
 {
     QMessageBox msg;
     if(!this->network){
-        ui->actionNew_Descriptor->trigger();
+        this->network = new Descriptor();
     }
     try{
-        this->network->read_a_map();
+        this->network->load_a_map();
         //ui->hashNumber->setText("Hash Number: "+ QString::number(this->network->p()));
     }
     catch(...){
@@ -427,6 +471,7 @@ void MainWindow::resetAllValues()
     this->set_BottomRight_topLeft_Points(QPoint(0,0), QPoint(0,0));
     this->auxTomove = false;
     this->auxToSelect = true;
+    ui->stop->click();
 
     ui->graphicsView->setPoint1(QPoint(0,0));
     ui->graphicsView->setPoint2(QPoint(0,0));
@@ -436,10 +481,18 @@ void MainWindow::set_BottomRight_topLeft_Points(QPoint _P1, QPoint _P2)
 {
     this->originPoint = _P1;
     this->endPoint = _P2;
-    ui->x1->setText("x1: "+QString::number(this->originPoint.x()));
-    ui->x2->setText("x2: "+QString::number(this->endPoint.x()));
-    ui->y2->setText("y2: "+QString::number(this->endPoint.y()));
-    ui->y1->setText("y1: "+QString::number(this->originPoint.y()));
+    if(this->endPoint!=QPoint(0,0)){
+        ui->x1->setText("x1: "+QString::number(this->imageinput->getTopLeft().x));
+        ui->x2->setText("x2: "+QString::number(this->imageinput->getButtonRight().x));
+        ui->y2->setText("y2: "+QString::number(this->imageinput->getButtonRight().y));
+        ui->y1->setText("y1: "+QString::number(this->imageinput->getTopLeft().y));
+    }
+    else{
+        ui->x1->setText("x1: "+QString::number(0));
+        ui->x2->setText("x2: "+QString::number(0));
+        ui->y2->setText("y2: "+QString::number(0));
+        ui->y1->setText("y1: "+QString::number(0));
+    }
     /*if(this->network && this->network->p()>0) ui->hashNumber->setText("Rect Size: " + QString::number(ui->graphicsView->sizeframe()) + " - Hash: " + QString::number(this->network->p()));
     else{
         ui->hashNumber->setText("");
@@ -458,10 +511,10 @@ void MainWindow::on_bottonSetInputs_clicked()
         qDebug()<<"H: "<<(int)(this->rectToDraw->rect().height()*(this->imageinput->getImageSize().height/(double)this->imagePixmap->height()));
         this->sizeOfRect.setWidth(this->endPoint.x() - this->originPoint.x());
         qDebug()<<"W: "<<(int)(this->rectToDraw->rect().width()*(this->imageinput->getImageSize().width/(double)this->imagePixmap->width()));
-        this->network = new Descriptor(Size(this->sizeOfRect.width()*(this->imageinput->getImageSize().width/(double)this->imagePixmap->width()),
-                                        this->sizeOfRect.height()*(this->imageinput->getImageSize().height/(double)this->imagePixmap->height())),
+        this->network = new Descriptor(Size(this->imageinput->getRectWidth(),//this->sizeOfRect.width()*(this->imageinput->getImageSize().width/(double)this->imagePixmap->width()),
+                                        this->imageinput->getRecHeight()),
                                        ui->lineInputBits->text().toInt(), &this->imageinput);
-        qDebug()<<"size rect: "<< ((int)(this->sizeOfRect.width()*(this->imageinput->getImageSize().width/(double)this->imagePixmap->width()))*
-                    (int)(this->sizeOfRect.height()*(this->imageinput->getImageSize().height/(double)this->imagePixmap->height())));
+        qDebug()<<"size rect: "<< this->imageinput->getRecHeight()*this->imageinput->getRectWidth();
+        ui->lineInputBits->setReadOnly(true);
     }
 }

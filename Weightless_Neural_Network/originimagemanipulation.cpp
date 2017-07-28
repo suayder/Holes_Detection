@@ -41,7 +41,7 @@ void originImageManipulation::imageRead(String directory)
 
 void originImageManipulation::thresholding()
 {
-    Mat im;
+    //Mat im;
     unsigned long int sum_of_image = 0;
     for(int i = 0;i<=this->image.cols;i++){
         for(int j=0;j<=this->image.rows;j++){
@@ -66,11 +66,17 @@ void originImageManipulation::setCorrespondingPoins(int x1, int y1, int x2, int 
 
 }
 
+void originImageManipulation::setCorrespondingPoins(int x1, int y1, int width, int height, Size size)
+{
+    this->topLeft = Point(((this->image.size().width/(double)width)*x1), ((this->image.size().height/(double)height)*y1));
+    this->buttonRight = Point(this->topLeft.x+size.width, this->topLeft.y+size.height);
+}
+
 void originImageManipulation::drawRect(Point topLeft, Point ButtonRiht)
 {
-    rectangle(this->image, topLeft, ButtonRiht, Scalar(255,0,255), 3,0,0);
-    Mat im;
-    resize(this->image, im,Size(this->image.cols/4, this->image.rows/5));
+    Mat im = this->image.clone();
+    rectangle(im, topLeft, ButtonRiht, Scalar(125,0,125), 6,0,0);
+    resize(im, im,Size(im.cols/4, im.rows/5));
     namedWindow("WINDOW", WINDOW_AUTOSIZE);
     imshow("image", im);
     waitKey(0);
@@ -85,6 +91,16 @@ int originImageManipulation::rectangleSize()
         cout << "ERROR IN RECTANGLE SIZE FUNCTION - "<< e.what() <<endl;
     }
 
+}
+
+int originImageManipulation::getRectWidth()
+{
+    return ABSOLUTEVALUE(this->buttonRight.x - this->topLeft.x);
+}
+
+int originImageManipulation::getRecHeight()
+{
+    return ABSOLUTEVALUE(this->buttonRight.y-this->topLeft.y);
 }
 
 char originImageManipulation::getRandomPoint() // This function return one binary value randommizing
@@ -148,15 +164,16 @@ void originImageManipulation::allocateAuxMatrix(int col, int row)
 {
     int contAux = 0;
     this->auxRandom = (char*) malloc((row*col)*sizeof(char));
-    for(int n = 0; n<row; n++){
+    Mat aux = this->image.clone();
+    for(int n = 0; n< row; n++){
         for(int m = 0; m < col; m++){
             this->auxRandom[contAux] = ((this->image.at<uchar>((n+this->topLeft.y),(m+this->topLeft.x)) == 255)?'1':'0');
             contAux++;
-            //this->image.at<uchar>((n+this->topLeft.x),(m+this->topLeft.y)) = 254;
-            //namedWindow( "Display window", WINDOW_AUTOSIZE );
-            //imshow("image", this->image);
-            //waitKey(1);
+            //aux.at<uchar>((n+this->topLeft.y),(m+this->topLeft.x)) = 254;
         }
+        //namedWindow( "Display window", WINDOW_AUTOSIZE );
+        //imshow("image", aux);
+        //waitKey(1);
     }
 }
 
@@ -164,16 +181,17 @@ void originImageManipulation::allocateAuxMatrix(Point _P, Size s)
 {
     int contAux = 0;
     this->auxRandom = (char*) malloc((s.area())*sizeof(char));
-    for(int n = 0; n< s.width; n++){
-        for(int m = 0; m < s.height; m++){
-            this->auxRandom[contAux] = ((this->image.at<uchar>((m+_P.y),(n+_P.x)) == 255)?'1':'0');
+    Mat aux = this->image.clone();
+    for(int n = 0; n< s.height; n++){
+        for(int m = 0; m < s.width; m++){
+            this->auxRandom[contAux] = ((this->image.at<uchar>((n+_P.y),(m+_P.x)) == 255)?'1':'0');
             contAux++;
-            //this->image.at<uchar>((m+_P.y),(n+_P.x)) = 254;
+            //aux.at<uchar>((n+_P.y),(m+_P.x)) = 254;
         }
+        //namedWindow( "Display window", WINDOW_AUTOSIZE );
+        //imshow("image", aux);
+        //waitKey(10);
     }
-    //namedWindow( "Display window", WINDOW_AUTOSIZE );
-    //imshow("image", this->image);
-    //waitKey(10);
 }
 
 void originImageManipulation::insertRect()

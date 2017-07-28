@@ -4,7 +4,9 @@
 #include <vector>
 #include <string>
 #include <thread>
-
+#include <string>
+#include <fstream>
+#include <ctime>
 #include "ram.h"
 #include "mapping.h"
 #include "originimagemanipulation.h"
@@ -18,6 +20,7 @@ public:
 
     Descriptor( unsigned int ramNumberOfInputs, originImageManipulation **image);
     Descriptor(Size Sdefault, unsigned int ramNumberOfInputs, originImageManipulation **image);
+    Descriptor();
 
     void setValuesOnEachRam(vector<char> &vector);
 
@@ -37,12 +40,16 @@ public:
 
     void saveNetwork();
 
-    void read_a_map();
+    void load_a_map();
 
     void p(){ //ERASE THIS FUNCTION
-        RAM r = this->ramVector.at(0);
-        r.print();
+        vector<RAM>::iterator r = this->ramVector.begin();
+        r->print();
     }
+
+    void set_retine();
+
+    unsigned int getRamNumber() const;
 
 private:
 
@@ -59,6 +66,10 @@ private:
     cv::Size sizeOfRect; //Standard size
 
     int numOfIter; //This is couting number of rects trained
+
+    vector<unsigned int> retinalOrdering; //ordering of the retine
+
+    char *test;
 
 };
 

@@ -66,6 +66,8 @@ private slots:
 
     void on_start_clicked();
 
+    void on_stop_clicked();
+
     void keyReleaseEvent(QKeyEvent *ev);
 
     void on_Salve_DBF_triggered();
@@ -84,7 +86,7 @@ private slots:
 
     void on_actionSave_new_WNN_triggered();
 
-    void on_actionOpen_WNN_triggered();
+    void on_Load_WNN_triggered();
 
     void on_bottonSetInputs_clicked();
 
@@ -112,6 +114,8 @@ private:
 
     int auxWidth1, auxHeight1, auxWidth2, auxHeight2; // this is to be auxiliary in the rectangle move
     bool auxTomove, auxToSelect;
+
+    bool flagToOperating;
 
 };
 
