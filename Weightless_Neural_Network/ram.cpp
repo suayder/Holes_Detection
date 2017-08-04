@@ -17,24 +17,24 @@ bool RAM::getTrigger() const
     return trigger;
 }
 
-unordered_multimap<string, int> RAM::getMap()
+unordered_map<_int64, int> RAM::getMap()
 {
     return this->valueThisRam.getSetPatterns();
 }
 
-RAM::RAM(unsigned int inputBitsNumber)
+RAM::RAM(_int64 inputBitsNumber)
 {
     this->inputAmount = inputBitsNumber;
     this->trigger = false;
 }
 
-void RAM::insertValue_this_ram(string inputstandart, int iter)
+void RAM::insertValue_this_ram(_int64 inputstandart, int iter)
 {
-    if(inputstandart.length()==this->inputAmount)
+    //if(inputstandart.length()==this->inputAmount)
         this->valueThisRam.insetIntoSet(inputstandart, iter);
 }
 
-bool RAM::search_Pattern(string valueToSearch)
+bool RAM::search_Pattern(_int64 valueToSearch)
 {
     this->trigger = this->valueThisRam.searchPatterns(valueToSearch);
     return this->trigger;

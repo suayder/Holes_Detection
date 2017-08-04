@@ -1,0 +1,24 @@
+{
+    "name": "DJI_0056.JPG",
+    "number_holes": 3,
+    "points": [
+        {
+            "BottonRight_X": 548,
+            "BottonRight_Y": 317,
+            "TopLeft_X": 406,
+            "TopLeft_Y": 203
+        },
+        {
+            "BottonRight_X": 238,
+            "BottonRight_Y": 193,
+            "TopLeft_X": 144,
+            "TopLeft_Y": 118
+        },
+        {
+            "BottonRight_X": 780,
+            "BottonRight_Y": 322,
+            "TopLeft_X": 666,
+            "TopLeft_Y": 224
+        }
+    ]
+}

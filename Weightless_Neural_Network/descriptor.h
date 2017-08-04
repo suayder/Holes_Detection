@@ -11,7 +11,12 @@
 #include "mapping.h"
 #include "originimagemanipulation.h"
 
+#include <chrono>
+
 using namespace std;
+using namespace std::chrono;
+
+typedef unsigned long long int _int64;
 
 class Descriptor
 {
@@ -26,13 +31,15 @@ public:
 
     void training();
 
-    vector<pair<Point, int>> recognize(Point);
+    vector<int> recognize(Point);
 
     void fillRamVector();
     
     void setSizeOfRect(const int, const int, const int, const int);
 
     int FunctionOfEachRect(Point);
+
+    void FunctionOfEachRect(Point _P, int *i);
 
     void setRamNumberOfInputs(unsigned int value);
 

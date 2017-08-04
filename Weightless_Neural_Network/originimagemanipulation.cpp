@@ -4,12 +4,12 @@
 
 originImageManipulation::originImageManipulation()
 {
-    this->auxRandom = NULL;
+    this->auxRandom.clear();
 }
 
 originImageManipulation::~originImageManipulation()
 {
-    if(this->auxRandom!=NULL) this->deleteAuxMatrix();//((this->buttonRight.x - this->topLeft.x)*(this->buttonRight.y - this->topLeft.y));
+    if(!this->auxRandom.empty()) this->deleteAuxMatrix();//((this->buttonRight.x - this->topLeft.x)*(this->buttonRight.y - this->topLeft.y));
 }
 
 Point originImageManipulation::getTopLeft() const
@@ -66,10 +66,12 @@ void originImageManipulation::setCorrespondingPoins(int x1, int y1, int x2, int 
 
 }
 
-void originImageManipulation::setCorrespondingPoins(int x1, int y1, int width, int height, Size size)
+void originImageManipulation::setCorrespondingPoins(int x1, int y1, int width, int height, Size size, int auxReference)
 {
     this->topLeft = Point(((this->image.size().width/(double)width)*x1), ((this->image.size().height/(double)height)*y1));
     this->buttonRight = Point(this->topLeft.x+size.width, this->topLeft.y+size.height);
+    this->vr.at(auxReference).first = this->topLeft;
+    this->vr.at(auxReference).second = this->buttonRight;
 }
 
 void originImageManipulation::drawRect(Point topLeft, Point ButtonRiht)
@@ -156,18 +158,18 @@ Size originImageManipulation::getImageSize()
 
 void originImageManipulation::deleteAuxMatrix()
 {
-    free(this->auxRandom);
-    this->auxRandom = NULL;
+    this->auxRandom.clear();
+    //this->auxRandom = NULL;
 }
 
 void originImageManipulation::allocateAuxMatrix(int col, int row)
 {
     int contAux = 0;
-    this->auxRandom = (char*) malloc((row*col)*sizeof(char));
-    Mat aux = this->image.clone();
+    //this->auxRandom = (char*) malloc((row*col)*sizeof(char));
+    //Mat aux = this->image.clone();
     for(int n = 0; n< row; n++){
         for(int m = 0; m < col; m++){
-            this->auxRandom[contAux] = ((this->image.at<uchar>((n+this->topLeft.y),(m+this->topLeft.x)) == 255)?'1':'0');
+            this->auxRandom.push_back(((this->image.at<uchar>((n+this->topLeft.y),(m+this->topLeft.x)) == 255)?1:0));
             contAux++;
             //aux.at<uchar>((n+this->topLeft.y),(m+this->topLeft.x)) = 254;
         }
@@ -179,13 +181,13 @@ void originImageManipulation::allocateAuxMatrix(int col, int row)
 
 void originImageManipulation::allocateAuxMatrix(Point _P, Size s)
 {
-    int contAux = 0;
-    this->auxRandom = (char*) malloc((s.area())*sizeof(char));
-    Mat aux = this->image.clone();
+    //int contAux = 0;
+    //this->auxRandom = (char*) malloc((s.area())*sizeof(char));
+    //Mat aux = this->image.clone();
     for(int n = 0; n< s.height; n++){
         for(int m = 0; m < s.width; m++){
-            this->auxRandom[contAux] = ((this->image.at<uchar>((n+_P.y),(m+_P.x)) == 255)?'1':'0');
-            contAux++;
+            this->auxRandom.push_back(((this->image.at<uchar>((n+_P.y),(m+_P.x)) == 255)?1:0));
+            //contAux++;
             //aux.at<uchar>((n+_P.y),(m+_P.x)) = 254;
         }
         //namedWindow( "Display window", WINDOW_AUTOSIZE );
@@ -211,7 +213,7 @@ void originImageManipulation::setPointsWithinVector(int pos)
     this->buttonRight = this->vr[pos].second;
 }
 
-char *originImageManipulation::getAuxRandom() const
+vector<int> originImageManipulation::getAuxRandom()
 {
     return auxRandom;
 }

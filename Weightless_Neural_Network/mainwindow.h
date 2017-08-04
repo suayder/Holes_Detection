@@ -15,6 +15,7 @@
 #include <QActionGroup>
 #include <QSize>
 #include <QMessageBox>
+#include <QThread>
 
 //**********C++ Libraryes*****************
 
@@ -113,9 +114,12 @@ private:
     QPoint endPoint; //Botton Right
 
     int auxWidth1, auxHeight1, auxWidth2, auxHeight2; // this is to be auxiliary in the rectangle move
+    int auxUpdateRect; //Auxiliary when is moving the rect end tell what is the rectangle in original image
     bool auxTomove, auxToSelect;
 
     bool flagToOperating;
+
+    QThread thread;
 
 };
 

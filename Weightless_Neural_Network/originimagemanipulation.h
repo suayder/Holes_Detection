@@ -42,7 +42,7 @@ public:
 
     void setCorrespondingPoins(int x1, int y1, int x2, int y2, int width, int height); //return corresponding point with another scaled image
 
-    void setCorrespondingPoins(int x1, int y1, int width, int height, Size size); //return corresponding point with another scaled image
+    void setCorrespondingPoins(int x1, int y1, int width, int height, Size size, int); //return corresponding point with another scaled image
 
     void drawRect(Point topLeft, Point ButtonRiht); //Only to see rect selected in original image
 
@@ -71,14 +71,14 @@ public:
 
     void setPointsWithinVector(int pos);
 
-    char *getAuxRandom() const;
+    vector<int> getAuxRandom();
 
 private:
 
     Mat image;
     Point topLeft, buttonRight;
     vector<pair<Point,Point>> vr; //Vector of Rects
-    char *auxRandom; //Is the Matrix to check the values
+    vector<int> auxRandom; //Is the Matrix to check the values
 };
 
 #endif // ORIGINIMAGEMANIPULATION_H

@@ -11,25 +11,27 @@
 
 using namespace std;
 
+typedef unsigned long long int _int64;
+
 class mapping
 {
 public:
     mapping();
 
-    void insetIntoSet(const string patterns, int numIter);
+    void insetIntoSet(const _int64 patterns, int numIter);
 
     void print_hash(); //Only for test
 
-    bool searchPatterns(const string valueToSearch);
+    bool searchPatterns(const _int64 valueToSearch);
 
     int getSetSize() const;
 
-    unordered_multimap<string, int> getSetPatterns() const;
+    unordered_map<_int64, int> getSetPatterns() const;
 
 private:
 
-    string patterns;
-    unordered_multimap<string,int> setPatterns;
+    unsigned int patterns;
+    unordered_map<_int64,int> setPatterns;
 
 };
 

@@ -65,12 +65,14 @@ void MainWindow::mouse_is_clicked() //If was pressed
 {    
 
     this->rectToDraw = NULL;
+    this->auxUpdateRect = 0;
 
     foreach (QGraphicsRectItem *rect, this->rects) {
        if(rect->isUnderMouse()){
            this->rectToDraw = rect;
            this->originPoint = this->rectToDraw->rect().topLeft().toPoint();
            this->endPoint = this->rectToDraw->rect().bottomRight().toPoint();
+           this->imageinput->setPointsWithinVector(this->auxUpdateRect);
 
            ui->x1->setText("x1: " + QString::number(this->imageinput->getTopLeft().x));
            ui->y1->setText("y1: " + QString::number(this->imageinput->getTopLeft().y));
@@ -78,6 +80,7 @@ void MainWindow::mouse_is_clicked() //If was pressed
            ui->y2->setText("y2: " + QString::number(this->imageinput->getButtonRight().y));
            break;
        }
+       this->auxUpdateRect++;
     }
     if(this->rectToDraw!=NULL && this->rectToDraw->isUnderMouse()){
 
@@ -116,11 +119,14 @@ void MainWindow::mouse_Move()
             ui->graphicsView->setPoint2(this->endPoint);
 
             if(this->network){
-                this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(), this->imagePixmap->width(), this->imagePixmap->height(), this->network->getSizeOfRect());
+                this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(),
+                                                        this->imagePixmap->width(), this->imagePixmap->height(),
+                                                        this->network->getSizeOfRect(), this->auxUpdateRect);
 
                 if(this->flagToOperating == true){ //Dragging while it's working
 
-                    int r = this->network->FunctionOfEachRect(this->imageinput->getTopLeft());
+
+                    int r =this->network->FunctionOfEachRect(this->imageinput->getTopLeft());
                     if(r>=this->network->getRamNumber()*0.8)
                         ui->textConsole->setTextColor(QColor(Qt::red));
                     else
@@ -174,7 +180,7 @@ void MainWindow::mouse_Release()
           this->imageinput->setButtonRight(Point(this->endPoint.x(), this->endPoint.y()));
       }
       if(this->network){
-          this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(), this->imagePixmap->width(), this->imagePixmap->height(), this->network->getSizeOfRect());
+          this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(), this->imagePixmap->width(), this->imagePixmap->height(), this->network->getSizeOfRect(), this->auxUpdateRect);
       }
       else{
           this->imageinput->setCorrespondingPoins(this->originPoint.x(), this->originPoint.y(),
@@ -224,13 +230,16 @@ void MainWindow::on_start_clicked()
                 else{
                     if(!this->network)
                         ui->actionNew_Descriptor->trigger();
+                    ui->textConsole->setText("Wait...");
+                    QApplication::processEvents();
                     try{
                         this->network->training();
                         this->network->p();
                     }
                     catch(exception& e){
-                        qDebug() <<"ERROR, EXCEPTION: "<< e.what() << endl;
+                        ui->textConsole->setText("ERROR, EXCEPTION: " + QString(e.what()));
                     }
+                    ui->textConsole->setText("Done!");
                 }
             }
             ui->stop->setEnabled(false);
@@ -246,11 +255,13 @@ void MainWindow::on_start_clicked()
                 //    this->imageinput->drawRect(v.first, Point(this->network->getSizeOfRect().width+v.first.x,this->network->getSizeOfRect().height+v.first.y));
                 //}
                 int r = this->network->FunctionOfEachRect(this->imageinput->getTopLeft());
+
                 if(r>=this->network->getRamNumber()*0.8)
                     ui->textConsole->setTextColor(QColor(Qt::red));
                 else
                     ui->textConsole->setTextColor(QColor(Qt::black));
                 ui->textConsole->append("Rams fired: "+QString::number(r));
+
                 this->flagToOperating = true;
             }
         }
@@ -363,7 +374,7 @@ void MainWindow::on_actionNew_triggered()
         //this->endPoint = this->rectToDraw->rect().bottomRight().toPoint();
         this->imageinput->setTopLeft(Point(0,0));
         this->imageinput->setButtonRight(Point(this->network->getSizeOfRect().width,this->network->getSizeOfRect().height));
-        qDebug()<<this->imageinput->getButtonRight().x<<this->imageinput->getButtonRight().y;
+        //qDebug()<<this->imageinput->getButtonRight().x<<this->imageinput->getButtonRight().y;
         //this->imageinput->setCorrespondingPoins(0, 0, this->endPoint.x(), this->endPoint.y(),
          //                                       this->imagePixmap->width(), this->imagePixmap->height());
         this->set_BottomRight_topLeft_Points(this->rectToDraw->rect().topLeft().toPoint(), this->rectToDraw->rect().bottomRight().toPoint());
