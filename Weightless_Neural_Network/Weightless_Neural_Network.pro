@@ -41,8 +41,7 @@ SOURCES += main.cpp\
     mapping.cpp \
     binary_tree_tostorage.cpp \
     originimagemanipulation.cpp \
-    inputrectanglesize.cpp \
-    serialization.cpp
+    inputrectanglesize.cpp
 
 HEADERS  += mainwindow.h \
     ram.h \
@@ -52,8 +51,7 @@ HEADERS  += mainwindow.h \
     mapping.h \
     binary_tree_tostorage.h \
     originimagemanipulation.h \
-    inputrectanglesize.h \
-    serialization.h
+    inputrectanglesize.h
 
 FORMS    += mainwindow.ui \
     inputrectanglesize.ui

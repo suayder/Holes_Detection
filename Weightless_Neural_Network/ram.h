@@ -5,7 +5,9 @@
 #include <vector>
 #include <unordered_map>
 #include "mapping.h"
+
 #include <QDebug>
+
 using namespace std;
 
 typedef unsigned long long int _int64;

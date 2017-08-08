@@ -12,9 +12,9 @@
 #include "originimagemanipulation.h"
 
 #include <chrono>
+using namespace std::chrono;
 
 using namespace std;
-using namespace std::chrono;
 
 typedef unsigned long long int _int64;
 
@@ -37,6 +37,8 @@ public:
     
     void setSizeOfRect(const int, const int, const int, const int);
 
+    void setSizeOfRect(int width, int heidth);
+
     int FunctionOfEachRect(Point);
 
     void FunctionOfEachRect(Point _P, int *i);
@@ -56,7 +58,13 @@ public:
 
     void set_retine();
 
+    void set_retine(vector<unsigned int>&);
+
     unsigned int getRamNumber() const;
+
+    unsigned int getRamNumberOfInputs() const;
+
+    vector<unsigned int> getRetinalOrdering() const;
 
 private:
 

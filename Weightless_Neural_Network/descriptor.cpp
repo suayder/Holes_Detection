@@ -28,20 +28,12 @@ Descriptor::Descriptor()
 
 void Descriptor::training()
 {
-    int auxCont, auxToopsr, otheraux;
+    int auxCont, auxToopsr, otheraux, t=0;
     vector<int> PointsOfimage;
     //Walks for all rects
     _int64 aux_get_inputs = 0;
     Point opsr, epsr; //Origin point of short rectangle, End Point of short rectangle
     for(int p=0;p<((*this->image)->getVr()).size();p++){
-
-        /************
-        qDebug()<<"TOTAL BITS IN RECT: " <<this->ramNumberOfInputs*this->ramNumber;
-        qDebug()<<"SIZE OF RECT: "<<(*this->image)->rectangleSize(); //THIS IS THE SIZE
-        qDebug()<<"SIZE OF RECT IN NETWORK: "<<this->sizeOfRect.area();
-        qDebug()<<"RAM NUMBER: " <<this->ramNumber;
-        qDebug()<<"RAM VECTOR SIZE: "<<this->ramVector.size();
-        /**********/
 
         (*this->image)->setPointsWithinVector(p);
 
@@ -53,22 +45,25 @@ void Descriptor::training()
 
         auxToopsr = opsr.y;
 
-        //--------------------------------------------
+        //-----------------------------------------------------------------
         for(;opsr.x<epsr.x;opsr.x++){
             for(opsr.y = auxToopsr;opsr.y<epsr.y;opsr.y++){
-                //(*this->image)->setTopLeft(opsr);
-                //(*this->image)->setButtonRight(epsr);
                 auxCont = 0;
                 (*this->image)->allocateAuxMatrix(opsr, this->sizeOfRect);
 
                 PointsOfimage = (*this->image)->getAuxRandom();
 
                 for(RAM& ram:this->ramVector){
+                    //high_resolution_clock::time_point t1 = high_resolution_clock::now();
                     for(unsigned int j = 0; j<this->ramNumberOfInputs; j++){
                         otheraux = PointsOfimage.at(this->retinalOrdering.at(auxCont));
                         aux_get_inputs = (otheraux==0)?(aux_get_inputs*10):(aux_get_inputs*10+1);
                         auxCont++;
                     }
+                    //high_resolution_clock::time_point t2 = high_resolution_clock::now();
+                    //auto duration = duration_cast<microseconds>( t2 - t1 ).count();
+                    //qDebug() <<"Duration: "<< duration;
+                    //t+=duration;
                     ram.insertValue_this_ram(aux_get_inputs, 1);
                     //qDebug()<<QString::fromStdString(aux_get_inputs);
                     //qDebug()<<this->ramVector.size();
@@ -78,12 +73,8 @@ void Descriptor::training()
                 (*this->image)->deleteAuxMatrix();
             }
         }
-
-        //qDebug()<<"SIZE OF AUX MATRIX: "<<(((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x)*
-        //                                 ((*this->image)->getButtonRight().y - (*this->image)->getTopLeft().y);
-
         //Walks for all RAM vector
-        //qDebug()<<PointsOfimage;
+        //qDebug()<<"Tes"<<t;
     }
 }
 
@@ -124,9 +115,14 @@ void Descriptor::setSizeOfRect(const int width, const int height, const int P_wi
     this->sizeOfRect = Size(w,h);
 }
 
+void Descriptor::setSizeOfRect(int width, int heidth)
+{
+    this->sizeOfRect = Size(width, heidth);
+}
+
 int Descriptor::FunctionOfEachRect(Point _P) //Just to recognize
 {
-    int cont = 0, auxCont = 0, otherAux;
+    int cont = 0, auxCont = 0, otherAux, t =0;
     vector<int> PointsOfimage;
     _int64 aux_get_inputs=0;
 
@@ -135,27 +131,27 @@ int Descriptor::FunctionOfEachRect(Point _P) //Just to recognize
     PointsOfimage = (*this->image)->getAuxRandom();
 
     //Walk through all the RAM
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-    for(auto ram:this->ramVector){
+    for(RAM ram:this->ramVector){
 
         for(unsigned int i=0; i<this->ramNumberOfInputs;i++){
             otherAux = PointsOfimage.at(this->retinalOrdering.at(auxCont));
             aux_get_inputs = (otherAux==0)?(aux_get_inputs*10):(aux_get_inputs*10+1);
             auxCont++;
         }
-
         if(ram.search_Pattern(aux_get_inputs))
             cont++;
 
-        aux_get_inputs = 0;
 
+        aux_get_inputs = 0;
     }
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>( t2 - t1 ).count();
-    qDebug() <<"Duration: "<< duration;
 
     (*this->image)->deleteAuxMatrix(); //((*this->image)->getButtonRight().x - (*this->image)->getTopLeft().x);
     return cont;
+}
+
+void Descriptor::setRamNumberOfInputs(unsigned int value)
+{
+    this->ramNumberOfInputs = value;
 }
 
 cv::Size Descriptor::getSizeOfRect() const
@@ -215,7 +211,7 @@ void Descriptor::load_a_map()
             //qDebug()<<QString::fromStdString(auxiliary);
             getline(input, auxiliary1);
             iaux = stoi(auxiliary1);
-            //it->insertValue_this_ram(auxiliary, iaux);
+            it->insertValue_this_ram(stoull(auxiliary), iaux);
         }
     }
     else{
@@ -246,7 +242,22 @@ void Descriptor::set_retine()
     }
 }
 
+void Descriptor::set_retine(vector<unsigned int> & retine)
+{
+    this->retinalOrdering = retine;
+}
+
 unsigned int Descriptor::getRamNumber() const
 {
     return ramNumber;
+}
+
+unsigned int Descriptor::getRamNumberOfInputs() const
+{
+    return ramNumberOfInputs;
+}
+
+vector<unsigned int> Descriptor::getRetinalOrdering() const
+{
+    return retinalOrdering;
 }

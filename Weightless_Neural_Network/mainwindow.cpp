@@ -341,12 +341,14 @@ void MainWindow::on_Salve_DBF_triggered()
         this->SaveInfo.setObject(object);
 
         file.setFileName("../Weightless_Neural_Network/JsonFiles/"+ui->imageList->item(this->current)->text().remove(".JPG",Qt::CaseSensitive)+".json");
+
         if(file.exists()) file.remove();
+
         file.setFileName("../Weightless_Neural_Network/JsonFiles/"+ui->imageList->item(this->current)->text().remove(".JPG",Qt::CaseSensitive)+".json");
+
         if(!file.open(QIODevice::ReadWrite)){
             msg.warning(0,"Warning", "Check your image directory!\nDirectory to save: Weightless_Neural_Network/JsonFiles/");
         }
-
         else{
             file.write(this->SaveInfo.toJson());
             file.close();
@@ -447,22 +449,62 @@ void MainWindow::on_lineInputBits_textEdited(const QString &arg1)
 void MainWindow::on_actionSave_new_WNN_triggered()
 {
     QMessageBox msg;
+    QJsonObject object;
+    QJsonArray ar;
+    vector<unsigned int> vet = this->network->getRetinalOrdering();
     if(this->network) {
         this->network->saveNetwork();
+        object.insert("width", this->network->getSizeOfRect().width);
+        object.insert("numberOfInputsInRam", int(this->network->getRamNumberOfInputs()));
+        object.insert("height", this->network->getSizeOfRect().height);
+
+        for(auto& v:vet){
+            ar.append(int(v));
+        }
+        object.insert("retinalOrdering", ar);
+        this->SaveInfo.setObject(object);
+        file.setFileName("../Weightless_Neural_Network/fileSalved/configurationFile.json");
         msg.setText("Successful");
         msg.exec();
+
+        if(!file.open(QIODevice::ReadWrite)){
+            msg.warning(0,"Warning", "Check your image directory!\nDirectory to save: Weightless_Neural_Network/JsonFiles/");
+        }
+        else{
+            file.write(this->SaveInfo.toJson());
+            file.close();
+            msg.setText("Saved Successfully. To access in "+file.fileName());
+            msg.exec();
+        }
     }
 }
 
 void MainWindow::on_Load_WNN_triggered()
 {
     QMessageBox msg;
+    QJsonDocument dJson;
+    vector<unsigned int> arrayjson;
     if(!this->network){
         this->network = new Descriptor();
     }
     try{
         this->network->load_a_map();
-        //ui->hashNumber->setText("Hash Number: "+ QString::number(this->network->p()));
+        if(!this->file.open(QIODevice::ReadOnly)){
+            msg.setText("Something wrong to read file");
+            msg.exec();
+        }
+        else{
+            this->file.setFileName("../Weightless_Neural_Network/fileSalved/configurationFile.json");
+            dJson = QJsonDocument::fromJson(this->file.readAll());
+            QJsonObject object = dJson.object();
+            this->network->setSizeOfRect(object["width"].toInt(), object["height"].toInt());
+            this->network->setRamNumberOfInputs(object["numberOfInputsInRam"].toInt());
+            QJsonArray jsonarray = object["retinalOrdering"].toArray();
+            for(auto ar:jsonarray){
+                arrayjson.push_back(ar.toInt());
+            }
+            this->network->set_retine(arrayjson);
+        }
     }
     catch(...){
         msg.setText("ERROR, Exception ocurred on open wwn");
