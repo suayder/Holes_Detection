@@ -8,4 +8,6 @@ It's not working yet.
 
 > When salved in Json, the path files go to [/Holes_Detection/Weightless_Neural_Network/JsonFiles/]()
 
->NOTE: To delete a rectangle drawed enough click on the chose and press *del* in keyboard
+>To init first you have choose a image and after draw a rect using the mouse then you will press *ok* to set values, so you can start a train or a operating.
+
+>NOTE: To delete a rectangle drawed enough click on the chose and press *del* in keyboard. And when you want create a new rectangle you can press only *n* in keyboard, but just if the size of already is setted within descriptor class;
