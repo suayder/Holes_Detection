@@ -4,10 +4,11 @@
 # Author: Suayder Milhomem Costa
 #
 #Compile information: This aplication use c++11 version to compile
+#                     and also use opencv
 #
 #------------------------------------------------------------------
 
-CONFIG += c++11
+CONFIG += c++11 -O3
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -41,7 +42,8 @@ SOURCES += main.cpp\
     mapping.cpp \
     binary_tree_tostorage.cpp \
     originimagemanipulation.cpp \
-    inputrectanglesize.cpp
+    inputrectanglesize.cpp \
+    tracker.cpp
 
 HEADERS  += mainwindow.h \
     ram.h \
@@ -51,7 +53,8 @@ HEADERS  += mainwindow.h \
     mapping.h \
     binary_tree_tostorage.h \
     originimagemanipulation.h \
-    inputrectanglesize.h
+    inputrectanglesize.h \
+    tracker.h
 
 FORMS    += mainwindow.ui \
     inputrectanglesize.ui

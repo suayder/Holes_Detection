@@ -1,0 +1,38 @@
+#ifndef TRACKER_H
+#define TRACKER_H
+
+#include<iostream>
+#include<QJsonObject>
+#include<QJsonDocument>
+#include<QFile>
+#include<QDir>
+
+using namespace std;
+
+class Tracker
+{
+public:
+    Tracker();
+    int averageHeigh();
+    int averageWidth();
+
+protected:
+    bool openImageToTrain(QString path); //Open each image
+    bool openFolder(QString folderPath); //Folder wiht many images to use
+    training();
+    search();
+
+private:
+    unsigned int sumHeight; //sum of all height
+    unsigned int sumWidth;
+    int numberHoles; //in all images
+    
+    QJsonDocument jsonDocument;
+    QJsonObject jsonObject;
+    QJsonArray jsonArray;
+    QFile ImageFile;
+    QDir fileDirectory;
+    QStringList files; //List of all images names
+};
+
+#endif // TRACKER_H

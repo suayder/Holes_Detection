@@ -53,28 +53,25 @@ void Descriptor::training()
 
                 PointsOfimage = (*this->image)->getAuxRandom();
 
+                //Walks for all RAM vector
                 for(RAM& ram:this->ramVector){
-                    //high_resolution_clock::time_point t1 = high_resolution_clock::now();
+                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
                     for(unsigned int j = 0; j<this->ramNumberOfInputs; j++){
                         otheraux = PointsOfimage.at(this->retinalOrdering.at(auxCont));
                         aux_get_inputs = (otheraux==0)?(aux_get_inputs*10):(aux_get_inputs*10+1);
                         auxCont++;
                     }
-                    //high_resolution_clock::time_point t2 = high_resolution_clock::now();
-                    //auto duration = duration_cast<microseconds>( t2 - t1 ).count();
+                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+                    auto duration = duration_cast<microseconds>( t2 - t1 ).count();
                     //qDebug() <<"Duration: "<< duration;
-                    //t+=duration;
+                    t+=duration;
                     ram.insertValue_this_ram(aux_get_inputs, 1);
-                    //qDebug()<<QString::fromStdString(aux_get_inputs);
-                    //qDebug()<<this->ramVector.size();
-                    //this->ramVector.at(0).print();
                     aux_get_inputs = 0;
                 }
                 (*this->image)->deleteAuxMatrix();
             }
         }
-        //Walks for all RAM vector
-        //qDebug()<<"Tes"<<t;
+        qDebug()<<"Tes"<<t;
     }
 }
 
@@ -132,7 +129,6 @@ int Descriptor::FunctionOfEachRect(Point _P) //Just to recognize
 
     //Walk through all the RAM
     for(RAM ram:this->ramVector){
-
         for(unsigned int i=0; i<this->ramNumberOfInputs;i++){
             otherAux = PointsOfimage.at(this->retinalOrdering.at(auxCont));
             aux_get_inputs = (otherAux==0)?(aux_get_inputs*10):(aux_get_inputs*10+1);

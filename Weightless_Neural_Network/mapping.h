@@ -18,7 +18,7 @@ class mapping
 public:
     mapping();
 
-    void insetIntoSet(const _int64 patterns, int numIter);
+    void insetIntoSet(_int64 patterns, int numIter);
 
     void print_hash(); //Only for test
 

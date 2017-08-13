@@ -7,7 +7,7 @@ mapping::mapping()
 }
 
 
-void mapping::insetIntoSet(const _int64 patterns, int numIter)
+void mapping::insetIntoSet(_int64 patterns, int numIter)
 {
     this->setPatterns.insert({patterns,numIter});
 }
