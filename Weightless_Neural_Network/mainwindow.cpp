@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
     ui->stop->setEnabled(false);
     ui->textConsole->setReadOnly(true);
@@ -17,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->imagePixmap = NULL;
     this->rectToDraw = NULL;
     this->network = NULL;
+    this->scene = NULL;
     this->auxTomove = false;
     this->auxToSelect = true;
     this->directoyimages = QDir("../Weightless_Neural_Network/dataBaseImages");
@@ -25,8 +25,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->graphicsView, SIGNAL(Mouse_Pressed()), SLOT(mouse_is_clicked()));
     connect(ui->graphicsView, SIGNAL(Mouse_Move()), SLOT(mouse_Move()));
     connect(ui->graphicsView, SIGNAL(Mouse_Released()), SLOT(mouse_Release()));
-
-    this->scene = NULL;
 
 }
 
@@ -43,6 +41,7 @@ void MainWindow::setListDirectoryImages(){ //List all archives in qlistview
             ui->imageList->addItem(file.fileName());
         }
     }
+    ui->imageList->sortItems(Qt::AscendingOrder);
 }
 
 void MainWindow::on_imageList_activated(const QModelIndex &index)
@@ -295,7 +294,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *ev)
                 ui->y1->setText("y1: " + QString::number(this->originPoint.y(), 10));
                 ui->x2->setText("x2: " + QString::number(ui->graphicsView->getPoint2().x()));
                 ui->y2->setText("y2: " + QString::number(ui->graphicsView->getPoint2().y()));
-                ui->hashNumber->setText("Rect Size: " + QString::number(ui->graphicsView->sizeframe()));
                 if(ui->lineInputBits->text() != "") ui->numberRans->setText(QString::number((this->imageinput->rectangleSize())/(ui->lineInputBits->text()).toFloat()));
                 //if(this->network && this->network->p()>0) ui->hashNumber->setText(ui->hashNumber->text() + " - Hash: " + QString::number(this->network->p()));
             }
@@ -363,7 +361,7 @@ void MainWindow::on_Salve_DBF_triggered()
 
 }
 
-void MainWindow::on_actionNew_triggered()
+void MainWindow::on_actionNew_triggered() //New rectangle
 {
     if(this->sizeOfRect!=QSize(0,0)){
 
@@ -553,6 +551,22 @@ void MainWindow::set_BottomRight_topLeft_Points(QPoint _P1, QPoint _P2)
     }*/
 }
 
+void MainWindow::set_image_to_tracker(int row)
+{
+    this->resetAllValues();
+    ui->imageList->setCurrentRow(row);
+    if(this->imageinput == NULL)
+        this->imageinput = new originImageManipulation();
+    this->imageinput->imageRead((this->directoyimages.filePath(ui->imageList->currentItem()->text())).toStdString());
+    this->imageinput->thresholding();
+
+    this->imagePixmap = new QPixmap((this->directoyimages.filePath(ui->imageList->currentItem()->text())));
+    if(!this->scene) this->scene = new QGraphicsScene(this);
+    *this->imagePixmap = this->imagePixmap->scaledToWidth(ui->graphicsView->width(), Qt::SmoothTransformation);
+    this->scene->addPixmap(*this->imagePixmap);
+    ui->graphicsView->setScene(this->scene);
+}
+
 void MainWindow::on_bottonSetInputs_clicked()
 {
     QMessageBox msg;
@@ -569,5 +583,32 @@ void MainWindow::on_bottonSetInputs_clicked()
                                        ui->lineInputBits->text().toInt(), &this->imageinput);
         qDebug()<<"size rect: "<< this->imageinput->getRecHeight()*this->imageinput->getRectWidth();
         ui->lineInputBits->setReadOnly(true);
+    }
+}
+
+void MainWindow::on_actionStartTracker_triggered()
+{
+    QMessageBox msg;
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                                                 "/home/suayder/Documents/Computer_Science/Detection_of_holes_in_asphalt_with_pattern_detection/Repository_Github/Holes_Detection/Weightless_Neural_Network/",
+                                                 QFileDialog::ShowDirsOnly
+                                                 | QFileDialog::DontResolveSymlinks);
+    if(!this->openFolder(dir)){
+        msg.critical(0,"Not Found Directory", "Check your directory, there is some error");
+    }
+    else{
+        QStringList nameFiles = this->getListOfNames();
+        this->network = new Descriptor(Size(this->averageWidth(), this->averageHeigh()),ui->lineInputBits->text().toUInt(),&this->imageinput);
+        ui->lineInputBits->setReadOnly(true);
+        for(auto names:nameFiles){
+            for(int i = 0; i<ui->imageList->count();i++){
+                if(ui->imageList->item(i)->text()==names+".JPG"){
+                    ui->imageList->setCurrentRow(i);
+                    this->set_image_to_tracker(i);
+                    foreach()
+                    break;
+                }
+            }
+        }
     }
 }

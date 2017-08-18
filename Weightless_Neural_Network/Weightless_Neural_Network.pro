@@ -43,7 +43,7 @@ SOURCES += main.cpp\
     binary_tree_tostorage.cpp \
     originimagemanipulation.cpp \
     inputrectanglesize.cpp \
-    tracker.cpp
+    imagejson.cpp
 
 HEADERS  += mainwindow.h \
     ram.h \
@@ -54,7 +54,7 @@ HEADERS  += mainwindow.h \
     binary_tree_tostorage.h \
     originimagemanipulation.h \
     inputrectanglesize.h \
-    tracker.h
+    imagejson.h
 
 FORMS    += mainwindow.ui \
     inputrectanglesize.ui

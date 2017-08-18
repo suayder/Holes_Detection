@@ -1,32 +1,39 @@
-#ifndef TRACKER_H
-#define TRACKER_H
+#ifndef IMAGEJSON_H
+#define IMAGEJSON_H
 
 #include<iostream>
 #include<QJsonObject>
 #include<QJsonDocument>
+#include<QJsonArray>
 #include<QFile>
 #include<QDir>
+#include<QPoint>
+
+#include <QDebug>
 
 using namespace std;
 
-class Tracker
+class Imagejson
 {
 public:
-    Tracker();
+    Imagejson();
+    QStringList getListOfNames();
+    QHash<QString, vector<QPoint> > getImagepoints() const;
+    vector<QPoint> searchPoints(QString);
     int averageHeigh();
     int averageWidth();
-
+    
 protected:
     bool openImageToTrain(QString path); //Open each image
     bool openFolder(QString folderPath); //Folder wiht many images to use
-    training();
-    search();
 
 private:
     unsigned int sumHeight; //sum of all height
     unsigned int sumWidth;
     int numberHoles; //in all images
-    
+    QHash<QString, vector<QPoint>> Imagepoints;
+    vector<QPoint> vpoint;
+
     QJsonDocument jsonDocument;
     QJsonObject jsonObject;
     QJsonArray jsonArray;
@@ -35,4 +42,4 @@ private:
     QStringList files; //List of all images names
 };
 
-#endif // TRACKER_H
+#endif // IMAGEJSON_H

@@ -16,6 +16,8 @@
 #include <QSize>
 #include <QMessageBox>
 #include <QThread>
+#include <QFileDialog>
+#include <QKeyEvent>
 
 //**********C++ Libraryes*****************
 
@@ -34,6 +36,7 @@
 #include "eventmouseclass.h"
 #include "descriptor.h"
 #include "conversion.h"
+#include "imagejson.h"
 
 
 
@@ -42,7 +45,7 @@ class MainWindow;
 }
 
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, private Imagejson
 {
     Q_OBJECT
 
@@ -56,6 +59,7 @@ public:
 
     void set_BottomRight_topLeft_Points(QPoint, QPoint);
 
+    void set_image_to_tracker(int row);
 
 
 private slots:
@@ -90,6 +94,8 @@ private slots:
     void on_Load_WNN_triggered();
 
     void on_bottonSetInputs_clicked();
+
+    void on_actionStartTracker_triggered();
 
 private:
     Ui::MainWindow *ui;
