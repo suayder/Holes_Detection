@@ -1,5 +1,5 @@
 # Weightless Neural Network
-## (I stoped update here, now just in my privet repository)
+## (I stoped update here, now just in my provate repository)
 
 It's not working yet.
 
