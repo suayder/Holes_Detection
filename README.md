@@ -3,7 +3,7 @@
 
 It's not working yet.
 
->Compiled with C++11 and need opencv Library
+>Compiled with C++11 and need OpenCV Library
 
 >This software contains a function to open a image data base. For images to be opened, it have to be in a folder into the project, where, there is in  [/Holes_Detection/Weightless_Neural_Network/dataBaseImages]().
 
