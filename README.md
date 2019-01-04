@@ -1,5 +1,5 @@
 # Weightless Neural Network
-## (I stoped update here, now just in my private repository)
+## (This projetc have been started [here](https://gitlab.com/suayder/pattern-recognition-tracker-gui.git) again to change the user interface)
 
 It's not working yet.
 
