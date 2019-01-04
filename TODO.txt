@@ -1,0 +1,1 @@
+[rankwizard] Pensar uma forma de codificação se vier muitos inteiros então o numero passa do tamanho de armazenamento suportado
